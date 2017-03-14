@@ -1,1 +1,4 @@
-sceneSetups: []
+sceneSetups:
+- path: Assets/Members/Fijii/Fijii.unity
+  isLoaded: 1
+  isActive: 1
