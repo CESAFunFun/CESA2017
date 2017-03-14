@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Members/Fijii/Fijii.unity
+- path: Assets/Members/Ogawa/Ogawa.unity
   isLoaded: 1
   isActive: 1
