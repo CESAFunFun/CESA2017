@@ -9,46 +9,36 @@ public class PressMachine : MonoBehaviour
     [SerializeField]
     private float backSpeed = 5;
     [SerializeField]
-    private float backTime = 2;
+    private float backTime = 0.5f;
+
+    public bool _actived = false;
 
     private Vector3 startPos;
-    private bool actived = false;
-
     private float time;
-
+    
     // Use this for initialization
     void Start ()
     {
         startPos = new Vector3(transform.position.x, transform.position.y);
         time = 0;
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    }
+
+    // Update is called once per frame
+    void Update ()
     {
-         
-        if (Input.GetKey(KeyCode.Z))
-            actived = true;
-
-        if (Input.GetKey(KeyCode.B))
-            actived = false;
-
         if(time >= backTime * 60)
-            actived = false;
+            _actived = false;
 
-        MachineOn(actived);
+        Debug.Log(time);
+
+        MachineOn(_actived);
 
     }
 
     public void MachineOn(bool on)
     {
-        //if (on)
-        //    transform.position = Vector3.Lerp(startPos, Vector3.zero, 25 * Time.deltaTime);
-        //else
-        //    transform.position = Vector3.MoveTowards(transform.position, startPos, backSpeed * Time.deltaTime);
-
-        if (on)
+        if (on && time != 0)
         {
             transform.Translate(Vector3.down * speed * Time.deltaTime);
             time++;
