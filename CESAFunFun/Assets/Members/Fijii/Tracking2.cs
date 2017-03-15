@@ -66,9 +66,8 @@ public class Tracking2 : MonoBehaviour {
         distance = target.transform.position.y - transform.position.y;
 
         //指定範囲内なら移動しない
-        if (distance < 0.1 && distance > -0.1)
+        if (distance < 0.3 && distance > -0.3)
         {
-            Debug.Log(distance);
         }
         else
         {
