@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < pressMachines.Length; i++)
             {
                 pressMachines[i]._actived = true;
+                Debug.Log("Pressed");
             }
         }
 

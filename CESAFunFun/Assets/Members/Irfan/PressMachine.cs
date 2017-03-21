@@ -38,7 +38,7 @@ public class PressMachine : MonoBehaviour
 
     public void MachineOn(bool on)
     {
-        if (on && time != 0)
+        if (on)
         {
             transform.Translate(Vector3.down * speed * Time.deltaTime);
             time++;
