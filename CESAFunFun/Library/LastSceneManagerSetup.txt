@@ -1,8 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
-- path: Assets/Members/Irfan/Irfan.unity
-=======
-- path: Assets/Members/Ogawa/Ogawa.unity
->>>>>>> 9f1f635e722b85dc2c02501211a3ac4a892a1045
+- path: Assets/Members/Irfan/PressMachine.unity
   isLoaded: 1
   isActive: 1
