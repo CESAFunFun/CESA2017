@@ -1,8 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
 - path: Assets/Members/Fijii/Fijii.unity
-=======
-- path: Assets/Members/Irfan/Irfan.unity
->>>>>>> 36f327fe2de2911d5b9000e7e4eac282796fbf7a
   isLoaded: 1
   isActive: 1
