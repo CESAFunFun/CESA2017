@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using GamepadInput;
 
-[RequireComponent(typeof(CharacterController))]
 public class GamePadControll : MonoBehaviour {
 
     [SerializeField]
@@ -13,47 +12,85 @@ public class GamePadControll : MonoBehaviour {
     [SerializeField]
     private float jumpPower = 5F;
 
-    [SerializeField] private bool freezeX = false;
-    [SerializeField] private bool freezeY = false;
-    [SerializeField] private bool freezeZ = false;
-
-    private CharacterController col;
-    private Vector3 velocity;
-    private const float GRAVITY = -9.8F;
+    private GamepadState inputState;
+    private GameCharactor charactor;
+    private Vector3 moveV = Vector3.zero;
 
     // Use this for initialization
     void Start() {
-        col = GetComponent<CharacterController>();
-        velocity = Vector3.zero;
+        charactor = GetComponent<GameCharactor>();
     }
 
     // Update is called once per frame
     void Update() {
         // インスペクターからゲームパッドの状態を取得
-        GamepadState inputState = SetGamePad(playerNumber);
+        inputState = GetGamePad(playerNumber);
 
-        // ジャンプの入力処理
-        if (inputState.A)
+        // ゲームパッドでの操作
+        if(inputState != null)
         {
-            if (col.isGrounded)
-                velocity.y = jumpPower;
+            // ジャン処理
+            if (inputState.A)
+            {
+                charactor.Jump(jumpPower);
+            }
+            // 左スティックで移動を行う
+            moveV.x = inputState.LeftStickAxis.x;
         }
-        if(!freezeY) velocity.y += GRAVITY * Time.deltaTime;
+        // キーボードでの操作
+        else
+        {
+            // ジャンプ処理
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                charactor.Jump(jumpPower);
+            }
 
-        // 左スティックで移動処理を行う
-        if(!freezeX) velocity.x = inputState.LeftStickAxis.x * moveSpeed;
-        if(!freezeZ) velocity.z = inputState.LeftStickAxis.y * moveSpeed;
+            // 方向キーで移動(横のみ)
+            if (Input.GetKey(KeyCode.LeftArrow))
+            {
+                moveV.x = -1F;
+            }
+            else if (Input.GetKey(KeyCode.RightArrow))
+            {
+                moveV.x = +1F;
+            }
+            else
+            {
+                moveV.x = 0F;
+            }
+        }
 
-        // キャラクターコライダーを用いて移動
-        col.Move(velocity * Time.deltaTime);
+        // 移動処理（座標の更新を行う）
+        charactor.Move(moveV, moveSpeed);
     }
 
-    GamepadState SetGamePad(GamePad.Index index) {
+    void LiftUp(GameObject obj) {
+        // コンポーネントを切らないとおかしな挙動になる
+        obj.GetComponent<CharacterController>().enabled = false;
+        obj.GetComponent<GameCharactor>().enabled = false;
+        // 子要素として頭上に設定
+        Vector3 overHead = new Vector3(0F, 1F + transform.childCount, 0F);
+        obj.transform.position = transform.position + overHead;
+        obj.transform.SetParent(transform);
+    }
+
+    GamepadState GetGamePad(GamePad.Index index) {
         if (index != GamePad.Index.Any)
         {
             // Any以外のゲームパッド状態を返す
             return GamePad.GetState(index, false);
         }
         return null;
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit) {
+        if(hit.gameObject.tag == "Child") {
+            //Debug.Log(hit.gameObject.name);
+            if(inputState.X || Input.GetKeyDown(KeyCode.Z))
+            {
+                LiftUp(hit.gameObject);
+            }
+        }
     }
 }
