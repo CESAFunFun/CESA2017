@@ -11,6 +11,9 @@ public class Tracking2 : MonoBehaviour {
 
     private Transform target;
 
+    [SerializeField]
+    private float speed;
+
     // Use this for initialization
     void Start()
     {
@@ -52,30 +55,15 @@ public class Tracking2 : MonoBehaviour {
         //指定範囲内なら移動しない
         if (distance < interval && distance > -interval)
         {
-            Debug.Log(distance);
+
         }
         else
         {
             //ｘ座標を比較する
             if (Calcu(target.transform.position.x + interval, transform.position.x))
-                transform.Translate(-0.1f, 0, 0);
+                transform.Translate(-speed, 0, 0);
             else
-                transform.Translate(0.1f, 0, 0);
-        }
-
-        distance = target.transform.position.y - transform.position.y;
-
-        //指定範囲内なら移動しない
-        if (distance < 0.3 && distance > -0.3)
-        {
-        }
-        else
-        {
-            //y座標を比較する
-            if (Calcu(target.transform.position.y, transform.position.y))
-                transform.Translate(0, -0.5f, 0);
-            else
-                transform.Translate(0, 0.5f, 0);
+                transform.Translate(speed, 0, 0);
         }
     }
 }
