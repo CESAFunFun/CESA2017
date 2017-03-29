@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+sceneSetups: []
+=======
 sceneSetups:
 - path: Assets/Members/Irfan/Floor.unity
   isLoaded: 1
   isActive: 1
+>>>>>>> 7299115f8049af2cc357b61f04b798c8981d08c3
