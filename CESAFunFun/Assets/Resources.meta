@@ -1,7 +1,11 @@
 fileFormatVersion: 2
 guid: a75fe82997008094a9f2d56897b17887
 folderAsset: yes
+<<<<<<< HEAD:CESAFunFun/Assets/Resources.meta
 timeCreated: 1490592073
+=======
+timeCreated: 1490577051
+>>>>>>> 7299115f8049af2cc357b61f04b798c8981d08c3:CESAFunFun/Assets/Resources.meta
 licenseType: Free
 DefaultImporter:
   userData: 
