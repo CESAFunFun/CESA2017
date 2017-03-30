@@ -9,13 +9,11 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField]
     private GamePad.Index playerIndex;
-    [SerializeField]
-    private float moveSpeed = 1F;
-    [SerializeField]
-    private float jumpPower = 1F;
+
+  
 
     private GamepadState inputState;
-    private Vector3 velocity;
+    public Vector3 velocity;
 
     // Use this for initialization
     void Start()
@@ -41,7 +39,7 @@ public class PlayerController : MonoBehaviour {
                 var obj = GameObject.FindGameObjectsWithTag("Child");
                 foreach (var o in obj)
                 {
-                    o.GetComponent<BoxCollider>().isTrigger = false;
+                    o.GetComponent<SphereCollider>().isTrigger = false;
                 }
             }
             else
@@ -49,7 +47,7 @@ public class PlayerController : MonoBehaviour {
                 var obj = GameObject.FindGameObjectsWithTag("Child");
                 foreach (var o in obj)
                 {
-                    o.GetComponent<BoxCollider>().isTrigger = true;
+                    o.GetComponent<SphereCollider>().isTrigger = true;
                 }
             }
 
@@ -62,7 +60,7 @@ public class PlayerController : MonoBehaviour {
             // ジャンプの入力と処理
             if (inputState.A)
             {
-                character.Jump(jumpPower);
+                character.Jump(character.jumpPower);
             }
         }
         else
@@ -70,11 +68,11 @@ public class PlayerController : MonoBehaviour {
             // 移動の入力
             if(Input.GetKey(KeyCode.A))
             {
-                velocity.x = -moveSpeed;
+                velocity.x = -character.moveSpeed;
             }
             else if(Input.GetKey(KeyCode.D))
             {
-                velocity.x = +moveSpeed;
+                velocity.x = +character.moveSpeed;
             }
             else
             {
@@ -87,7 +85,7 @@ public class PlayerController : MonoBehaviour {
                 var obj = GameObject.FindGameObjectsWithTag("Child");
                 foreach (var o in obj)
                 {
-                    o.GetComponent<BoxCollider>().isTrigger = false;
+                    o.GetComponent<SphereCollider>().isTrigger = false;
                 }
             }
             else if (Input.GetKeyUp(KeyCode.Z))
@@ -95,7 +93,7 @@ public class PlayerController : MonoBehaviour {
                 var obj = GameObject.FindGameObjectsWithTag("Child");
                 foreach (var o in obj)
                 {
-                    o.GetComponent<BoxCollider>().isTrigger = true;
+                    o.GetComponent<SphereCollider>().isTrigger = true;
                 }
             }
 
@@ -108,12 +106,12 @@ public class PlayerController : MonoBehaviour {
             // ジャンプの入力と処理
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                character.Jump(jumpPower);
+                character.Jump(character.jumpPower);
             }
         }
 
         // キャラクターの移動
-        character.Move(velocity, moveSpeed);
+        character.Move(velocity, character.moveSpeed);
     }
 
     void ThrowChild() {
@@ -123,7 +121,7 @@ public class PlayerController : MonoBehaviour {
             child.transform.SetParent(null);
             child.GetComponent<Rigidbody>().isKinematic = false;
             child.GetComponent<Rigidbody>().velocity = transform.up * 3F + transform.forward * 3.5F;
-            child.GetComponent<BoxCollider>().isTrigger = false;
+            child.GetComponent<SphereCollider>().isTrigger = false;
             child.GetComponent<RigidbodyCharacter>()._objected = true;
         }
     }

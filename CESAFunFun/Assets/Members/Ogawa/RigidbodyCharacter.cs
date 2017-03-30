@@ -11,6 +11,10 @@ public class RigidbodyCharacter : MonoBehaviour {
     private Rigidbody rigidbody;
     private Vector3 velocity;
 
+    public float moveSpeed = 1F;
+
+    public float jumpPower = 1F;
+
     void Start() {
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
@@ -51,7 +55,7 @@ public class RigidbodyCharacter : MonoBehaviour {
             rigidbody.isKinematic = true;
             if (!_objected)
             {
-                GetComponent<BoxCollider>().isTrigger = true;
+                GetComponent<SphereCollider>().isTrigger = true;
             }
         }
     }
