@@ -13,12 +13,12 @@ public class GamePadControll : MonoBehaviour {
     private float jumpPower = 5F;
 
     private GamepadState inputState;
-    private GameCharactor charactor;
+    private RigidbodyCharacter character;
     private Vector3 moveV = Vector3.zero;
 
     // Use this for initialization
     void Start() {
-        charactor = GetComponent<GameCharactor>();
+        character = GetComponent<RigidbodyCharacter>();
     }
 
     // Update is called once per frame
@@ -32,7 +32,7 @@ public class GamePadControll : MonoBehaviour {
             // ジャン処理
             if (inputState.A)
             {
-                charactor.Jump(jumpPower);
+                character.Jump(jumpPower);
             }
             // 左スティックで移動を行う
             moveV.x = inputState.LeftStickAxis.x;
@@ -43,7 +43,7 @@ public class GamePadControll : MonoBehaviour {
             // ジャンプ処理
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                charactor.Jump(jumpPower);
+                character.Jump(jumpPower);
             }
 
             // 方向キーで移動(横のみ)
@@ -62,13 +62,10 @@ public class GamePadControll : MonoBehaviour {
         }
 
         // 移動処理（座標の更新を行う）
-        charactor.Move(moveV, moveSpeed);
+        character.Move(moveV, moveSpeed);
     }
 
     void LiftUp(GameObject obj) {
-        // コンポーネントを切らないとおかしな挙動になる
-        obj.GetComponent<CharacterController>().enabled = false;
-        obj.GetComponent<GameCharactor>().enabled = false;
         // 子要素として頭上に設定
         Vector3 overHead = new Vector3(0F, 1F + transform.childCount, 0F);
         obj.transform.position = transform.position + overHead;
