@@ -124,15 +124,19 @@ public class PlayerController : MonoBehaviour {
             child.GetComponent<Rigidbody>().isKinematic = false;
             child.GetComponent<Rigidbody>().velocity = transform.up * 3F + transform.forward * 3.5F;
             child.GetComponent<BoxCollider>().isTrigger = false;
+            child.GetComponent<RigidbodyCharacter>()._objected = true;
         }
     }
 
     void OnCollisionEnter(Collision other) {
         if (other.gameObject.tag == "Child")
         {
-            Vector3 overHead = new Vector3(0F, 1F + transform.childCount, 0F);
-            other.transform.position = transform.position + overHead;
-            other.transform.SetParent(transform);
+            if (Input.GetKey(KeyCode.Z))
+            {
+                Vector3 overHead = new Vector3(0F, 1F + transform.childCount, 0F);
+                other.transform.position = transform.position + overHead;
+                other.transform.SetParent(transform);
+            }
         }
     }
 
