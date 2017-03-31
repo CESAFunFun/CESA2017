@@ -1,6 +1,10 @@
 sceneSetups:
 <<<<<<< HEAD
+<<<<<<< HEAD
 - path: Assets/Members/Guttan/Guttan.unity
+=======
+- path: Assets/Members/Ogawa/Ogawa.unity
+>>>>>>> 24c729122706ec2dbca0cd545375bbb3a3381199
 =======
 - path: Assets/Members/Ogawa/Ogawa.unity
 >>>>>>> 24c729122706ec2dbca0cd545375bbb3a3381199
