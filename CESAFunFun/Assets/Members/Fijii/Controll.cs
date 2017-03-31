@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[RequireComponent(typeof(CharacterController))]
-
 public class Controll : MonoBehaviour {
 
     private const float GRAVITY = -9.8f;

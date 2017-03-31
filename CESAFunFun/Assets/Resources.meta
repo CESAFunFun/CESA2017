@@ -1,11 +1,13 @@
 fileFormatVersion: 2
-guid: a75fe82997008094a9f2d56897b17887
-folderAsset: yes
 <<<<<<< HEAD:CESAFunFun/Assets/Resources.meta
-timeCreated: 1490592073
+guid: e28252e9f69889d43b2c513471495f5e
+folderAsset: yes
+timeCreated: 1490524787
 =======
-timeCreated: 1490577051
->>>>>>> 7299115f8049af2cc357b61f04b798c8981d08c3:CESAFunFun/Assets/Resources.meta
+guid: e5604363967ee6f439dbf9272e9a2511
+folderAsset: yes
+timeCreated: 1490922016
+>>>>>>> 24c729122706ec2dbca0cd545375bbb3a3381199:CESAFunFun/Assets/Scenes.meta
 licenseType: Free
 DefaultImporter:
   userData: 

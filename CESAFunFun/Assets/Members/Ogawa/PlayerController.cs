@@ -9,13 +9,10 @@ public class PlayerController : MonoBehaviour {
 
     [SerializeField]
     private GamePad.Index playerIndex;
-    [SerializeField]
-    private float moveSpeed = 1F;
-    [SerializeField]
-    private float jumpPower = 1F;
 
     private GamepadState inputState;
-    private Vector3 velocity;
+    [HideInInspector]
+    public Vector3 velocity;
 
     // Use this for initialization
     void Start()
@@ -32,83 +29,117 @@ public class PlayerController : MonoBehaviour {
 
         if (inputState != null)
         {
+            // 移動の入力
             velocity.x = inputState.LeftStickAxis.x;
 
-            var obj = GameObject.FindGameObjectWithTag("Child");
-            if (obj.GetComponent<Rigidbody>().isKinematic)
+            // TODO : キーボード側で同じ処理が記載されているので修正する
+            // XXX : 入力Releseが取れないとオブジェクト化できない
+            // 持ち上げるための衝突判定を有効化
+            if (inputState.X)
             {
-                if (inputState.X)
+                var obj = GameObject.FindGameObjectsWithTag("Child");
+                foreach (var o in obj)
                 {
-                    obj.GetComponent<BoxCollider>().isTrigger = false;
+                    o.GetComponent<SphereCollider>().isTrigger = false;
                 }
-                else
+            }
+            else if(!inputState.X)
+            {
+                var obj = GameObject.FindGameObjectsWithTag("Child");
+                foreach (var o in obj)
                 {
-                    obj.GetComponent<BoxCollider>().isTrigger = true;
+                    o.GetComponent<SphereCollider>().isTrigger = true;
                 }
             }
 
-            if(inputState.Y)
+            // 投げる入力
+            if (inputState.Y)
             {
-
+                ThrowChild();
             }
 
-            if(inputState.A)
+            // ジャンプの入力と処理
+            if (inputState.A)
             {
-                character.Jump(jumpPower);
+                character.Jump(character.jumpPower);
             }
         }
         else
         {
-            var obj = GameObject.FindGameObjectWithTag("Child");
-            if (obj.GetComponent<Rigidbody>().isKinematic)
+            // 移動の入力
+            if(Input.GetKey(KeyCode.A))
             {
-                if (Input.GetKey(KeyCode.Z))
-                {
-                    obj.GetComponent<BoxCollider>().isTrigger = false;
-                }
-                else
-                {
-                    obj.GetComponent<BoxCollider>().isTrigger = true;
-                }
+                velocity.x = -character.moveSpeed;
             }
-
-            if (Input.GetKey(KeyCode.X))
+            else if(Input.GetKey(KeyCode.D))
             {
-
-            }
-
-            if (Input.GetKey(KeyCode.A))
-            {
-                velocity.x = -1F;
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                velocity.x = 1F;
+                velocity.x = +character.moveSpeed;
             }
             else
             {
                 velocity.x = 0F;
             }
 
+            // TODO : ゲームパッド側で同じ処理が記載されているので修正する
+            // 持ち上げるための衝突判定を有効化
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                var obj = GameObject.FindGameObjectsWithTag("Child");
+                foreach (var o in obj)
+                {
+                    o.GetComponent<SphereCollider>().isTrigger = false;
+                }
+            }
+            else if (Input.GetKeyUp(KeyCode.Z))
+            {
+                var obj = GameObject.FindGameObjectsWithTag("Child");
+                foreach (var o in obj)
+                {
+                    o.GetComponent<SphereCollider>().isTrigger = true;
+                }
+            }
+
+            // 投げる入力
+            if (Input.GetKey(KeyCode.X))
+            {
+                ThrowChild();
+            }
+
+            // ジャンプの入力と処理
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                character.Jump(jumpPower);
+                character.Jump(character.jumpPower);
             }
         }
 
-        // キャラクターの向き方向の設定
-        transform.LookAt(transform.position + velocity);
         // キャラクターの移動
-        character.Move(velocity, moveSpeed);
+        character.Move(velocity, character.moveSpeed);
     }
 
-    void OnCollisionEnter(Collision collision) {
-        var obj = collision.gameObject;
-        if (obj.tag == "Child")
+    void ThrowChild() {
+        if (transform.childCount != 0)
         {
-            Vector3 overHead = new Vector3(0F, 1F + transform.childCount, 0F);
-            obj.transform.position = transform.position + overHead;
-            obj.transform.SetParent(transform);
+            // 子要素になっているものを外して前方向に投げる
+            Transform child = transform.GetChild(0);
+            child.transform.SetParent(null);
+            child.GetComponent<Rigidbody>().isKinematic = false;
+            child.GetComponent<Rigidbody>().velocity = transform.up * 3F + transform.forward * 3.5F;
+            // ここでキャラクターからオブジェクトに仕様変更される
+            child.GetComponent<SphereCollider>().isTrigger = false;
+            child.GetComponent<RigidbodyCharacter>()._objected = true;
+        }
+    }
+
+    void OnCollisionEnter(Collision other) {
+        if (other.gameObject.tag == "Child")
+        {
+            // Lift Up
+            if (Input.GetKey(KeyCode.Z) || ((inputState != null) && inputState.X))
+            {
+                Vector3 overHead = new Vector3(0F, 1F + transform.childCount, 0F);
+                other.transform.position = transform.position + overHead;
+                other.transform.SetParent(transform);
+            }
         }
     }
 
