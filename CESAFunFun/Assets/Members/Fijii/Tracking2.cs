@@ -4,20 +4,26 @@ using UnityEngine;
 
 public class Tracking2 : MonoBehaviour {
 
-    public Transform _target;
+
+    private RigidbodyCharacter character;
 
     [SerializeField]
-    private float interval;
+    private GameObject _target;
 
     private Transform target;
 
     [SerializeField]
-    private float speed;
+    private float interval;
+
+    private float time;
+
+    private bool jumpflag;
 
     // Use this for initialization
     void Start()
     {
-
+        character = GetComponent<RigidbodyCharacter>();
+        time = 0F;
     }
 
     // Update is called once per frame
@@ -27,6 +33,12 @@ public class Tracking2 : MonoBehaviour {
         PosUpdate();
 
         Move();
+
+        jumpflag = _target.GetComponent<RigidbodyCharacter>()._isGrounded;
+        if(!jumpflag)
+        {
+            Invoke("Jump", 0.2f);
+        }
 
     }
 
@@ -44,7 +56,7 @@ public class Tracking2 : MonoBehaviour {
     //ポジションの更新
     void PosUpdate()
     {
-        target = _target;
+        target = _target.transform;
     }
     //移動
     void Move()
@@ -61,9 +73,28 @@ public class Tracking2 : MonoBehaviour {
         {
             //ｘ座標を比較する
             if (Calcu(target.transform.position.x + interval, transform.position.x))
-                transform.Translate(-speed, 0, 0);
+            {
+                //Vector3 velocity = new Vector3(-1, 0, 0);//_target.GetComponent<PlayerController>().velocity;
+                Vector3 velocity = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().velocity;
+                float speed = _target.GetComponent<RigidbodyCharacter>().moveSpeed;
+                //キャラクターの移動
+                character.Move(velocity, speed);
+            }
             else
-                transform.Translate(speed, 0, 0);
+            {
+                //Vector3 velocity = new Vector3(1, 0, 0);//_target.GetComponent<PlayerController>().velocity;
+                Vector3 velocity = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().velocity;
+                float speed = _target.GetComponent<RigidbodyCharacter>().moveSpeed;
+                //キャラクターの移動
+                character.Move(velocity, speed);
+            }
         }
+    }
+
+    //ジャンプ
+    void Jump()
+    {
+        //プレイヤーと同じだけ飛ぶ
+        character.Jump(_target.GetComponent<RigidbodyCharacter>().jumpPower);
     }
 }

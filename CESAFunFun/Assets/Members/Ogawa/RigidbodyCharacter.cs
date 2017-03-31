@@ -5,93 +5,57 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class RigidbodyCharacter : MonoBehaviour {
 
-    [SerializeField]
-    private bool downGravity = true;
+    public bool _isGrounded = false;
+    public bool _objected = false;
 
     private Rigidbody rigidbody;
     private Vector3 velocity;
-    private Vector3 gravity;
-    [SerializeField]
-    private bool groundCollider;
-    [SerializeField]
-    private bool isGrounded;
+
+    public float moveSpeed = 1F;
+    public float jumpPower = 1F;
 
     void Start() {
-        // Rigidbodyの設定(重力・回転の無効化)
         rigidbody = GetComponent<Rigidbody>();
-        rigidbody.useGravity = false;
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
-        // 移動速度の初期化
         velocity = Vector3.zero;
-        // 接地関係のフラグ
-        groundCollider = false;
-        isGrounded = false;
-
-        // 自身の重力を設定
-        gravity = Physics.gravity;
-        // 重力方向の決定
-        if (downGravity)
-        {
-            gravity *= -1F;
-        }
     }
 
     void Update() {
-        // Colliderが接地していなければレイを飛ばして判定
-        if (!groundCollider)
-        {
-            if (Physics.Linecast(transform.position, transform.position - gravity.normalized))
-            {
-                isGrounded = true;
-            }
-            else
-            {
-                isGrounded = false;
-            }
-
-            // レイがどの方向に飛んでいるか描画チェック
-            Debug.DrawLine(transform.position, transform.position - gravity.normalized, Color.red);
-        }
-
-        // 接地していなければ重力処理を行う
-        if (!groundCollider && !isGrounded)
-        {
-            velocity -= gravity * Time.deltaTime;
-        }
-        if (groundCollider)
-        {
-            velocity.y = 0F;
-        }
+        // TODO : 自前の重力処理が記載されます
     }
 
     void FixedUpdate() {
-        // Rigidbodyでの移動処理でキャラクターを移動する
+        // Rigidbodyでの位置座標を更新
         rigidbody.MovePosition(transform.position + velocity * Time.deltaTime);
     }
 
-    public void Move(Vector3 v, float moveSpeed) {
-        // XXX : Ｙ軸を強制的に排除している
-        velocity.x = v.x * moveSpeed;
-        velocity.z = v.z * moveSpeed;
+    public void Move(Vector3 v, float speed) {
+        // XXX:Ｙ軸を意図的に排除している
+        velocity.x = v.x * speed;
+        velocity.z = v.z * speed;
+        transform.LookAt(transform.position + velocity);
     }
 
     public void Jump(float power) {
-        // 自身が持つ重力の反対方向に跳躍
-        if (groundCollider)
+        // 接地しているときのみ跳躍
+        if (_isGrounded)
         {
-            velocity.y = downGravity ? power : -power;
+            _isGrounded = false;
+            rigidbody.AddForce(transform.up * power * 100F);
         }
     }
 
-    void OnCollisionEnter(Collision col) {
-        // 重力方向にレイを飛ばして判定
-        if (Physics.Linecast(transform.position, transform.position - gravity.normalized))
+    void OnCollisionEnter(Collision other) {
+        // 接地判定のフラグを変更
+        _isGrounded = true;
+        // タグ"Child"のみオブジェクト化する
+        if (tag == "Child")
         {
-            groundCollider = true;
+            rigidbody.isKinematic = true;
+            if (!_objected)
+            {
+                GetComponent<SphereCollider>().isTrigger = true;
+            }
         }
-    }
-
-    void OnCollisionExit() {
-        groundCollider = false;
     }
 }
