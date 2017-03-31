@@ -1,4 +1,16 @@
 sceneSetups:
-- path: Assets/Members/Fijii/Fijii.unity
+<<<<<<< HEAD
+- path: Assets/Members/Irfan/Floor.unity
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+- path: Assets/Members/Guttan/Guttan.unity
+=======
+- path: Assets/Members/Ogawa/Ogawa.unity
+>>>>>>> 24c729122706ec2dbca0cd545375bbb3a3381199
+=======
+- path: Assets/Members/Ogawa/Ogawa.unity
+>>>>>>> 24c729122706ec2dbca0cd545375bbb3a3381199
+>>>>>>> 8f06b21bc3ed576bc0cea2b10d508b2541f2cb96
   isLoaded: 1
   isActive: 1
