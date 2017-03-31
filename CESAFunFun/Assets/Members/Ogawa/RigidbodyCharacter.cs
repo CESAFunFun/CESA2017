@@ -12,7 +12,6 @@ public class RigidbodyCharacter : MonoBehaviour {
     private Vector3 velocity;
 
     public float moveSpeed = 1F;
-
     public float jumpPower = 1F;
 
     void Start() {
@@ -22,7 +21,7 @@ public class RigidbodyCharacter : MonoBehaviour {
     }
 
     void Update() {
-
+        // TODO : 自前の重力処理が記載されます
     }
 
     void FixedUpdate() {
