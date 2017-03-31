@@ -12,9 +12,11 @@ public class PressMachine : MonoBehaviour
     //private float backTime = 0.5f;
 
     public bool _actived = false;
+    public bool _playerHit = false;
 
     private Vector3 startPos;
     private float time;
+    
     
     // Use this for initialization
     void Start ()
@@ -50,7 +52,12 @@ public class PressMachine : MonoBehaviour
 
     void OnTriggerEnter(Collider col)
     {
-        _actived = false;
+        if(col.gameObject.tag == "Floor")
+            _actived = false;
+
+        if(col.gameObject.tag == "Player")
+            _playerHit = true;
+        
     }
 
 

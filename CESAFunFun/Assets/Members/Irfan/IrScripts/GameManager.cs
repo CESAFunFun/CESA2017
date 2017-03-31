@@ -6,7 +6,10 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField]
     private PressMachine[] pressMachines;
+    [SerializeField]
+    private GameObject[] playerChilds;
 
+    private GameObject playerParent; 
     public static GameManager _instance = null;
 
     void Awake()
@@ -19,6 +22,11 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    void Start()
+    {
+        playerParent = GameObject.Find("Player");
+    }
+
     // Update is called once per frame
     void Update ()
     {
@@ -27,8 +35,24 @@ public class GameManager : MonoBehaviour
             for (int i = 0; i < pressMachines.Length; i++)
             {
                 pressMachines[i]._actived = true;
-                Debug.Log("Pressed");
             }
+        }
+
+        for(int i = 0; i< pressMachines.Length; i++)
+        {
+            if(pressMachines[i]._playerHit)
+            {
+                Destroy(playerParent);
+
+                for(int j = 0; j < playerChilds.Length; j++ )
+                {
+                    Instantiate(playerChilds[j], new Vector3(1 - j, 1, 0), Quaternion.identity);
+                    
+                }
+                pressMachines[i]._playerHit = false;
+            }
+
+            
         }
 
     }
