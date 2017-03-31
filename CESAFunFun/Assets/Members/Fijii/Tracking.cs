@@ -2,35 +2,51 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tracking : MonoBehaviour {
+public class Tracking : MonoBehaviour
+{
 
-    public Transform[] _target;
+    private RigidbodyCharacter character;
+
+    [SerializeField]
+    private GameObject _target;
+
+    private Transform target;
 
     [SerializeField]
     private float interval;
 
-    private Transform target;
+    private float time;
 
-	// Use this for initialization
-	void Start () {
+    private bool jumpflag;
 
-        //InvokeRepeating("PosUpdate", 1, 0.1f);
+    // Use this for initialization
+    void Start()
+    {
+        character = GetComponent<RigidbodyCharacter>();
+        time = 0F;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
 
         PosUpdate();
 
         Move();
 
+        jumpflag = _target.GetComponent<RigidbodyCharacter>()._isGrounded;
+        if (!jumpflag)
+        {
+            Invoke("Jump", 0.2f);
+        }
+
     }
 
     //ターゲットとのポジションを比較する
-    bool Calcu(float target,float pos)
+    bool Calcu(float target, float pos)
     {
 
-        if (pos > target) 
+        if (pos > target)
             return true;
 
         else
@@ -40,52 +56,46 @@ public class Tracking : MonoBehaviour {
     //ポジションの更新
     void PosUpdate()
     {
-        float heuristic = 1000;
-        target = _target[0];
-        for (int i = 0; i < 5; i++) 
-        {
-            if(heuristic < target.position.x - _target[i].position.x)
-            {
-                heuristic = target.position.x - _target[i].position.x;
-                target.position = _target[i].position;
-            }
-        }
-
+        target = _target.transform;
     }
     //移動
     void Move()
     {
 
-        float distance= target.transform.position.x - transform.position.x;
+        float distance = target.transform.position.x - transform.position.x;
 
         //指定範囲内なら移動しない
         if (distance < interval && distance > -interval)
         {
-            Debug.Log(distance);
+            Vector3 velocity = new Vector3(0, 0, 0);
+            float speed = _target.GetComponent<RigidbodyCharacter>().moveSpeed;
+            //キャラクターの移動
+            character.Move(velocity, speed);
         }
         else
         {
             //ｘ座標を比較する
             if (Calcu(target.transform.position.x + interval, transform.position.x))
-                transform.Translate(-0.3f, 0, 0);
+            {
+                Vector3 velocity = new Vector3(-1, 0, 0);//_target.GetComponent<PlayerController>().velocity;
+                float speed = _target.GetComponent<RigidbodyCharacter>().moveSpeed;
+                //キャラクターの移動
+                character.Move(velocity, speed);
+            }
             else
-                transform.Translate(0.3f, 0, 0);
+            {
+                Vector3 velocity = new Vector3(1, 0, 0);//_target.GetComponent<PlayerController>().velocity;
+                float speed = _target.GetComponent<RigidbodyCharacter>().moveSpeed;
+                //キャラクターの移動
+                character.Move(velocity, speed);
+            }
         }
+    }
 
-        distance = target.transform.position.y - transform.position.y;
-
-        //指定範囲内なら移動しない
-        if (distance < 0.1 && distance > -0.1)
-        {
-            Debug.Log(distance);
-        }
-        else
-        {
-            //y座標を比較する
-            if (Calcu(target.transform.position.y, transform.position.y))
-                transform.Translate(0, -1f, 0);
-            else
-                transform.Translate(0, 1f, 0);
-        }
+    //ジャンプ
+    void Jump()
+    {
+        //プレイヤーと同じだけ飛ぶ
+        character.Jump(_target.GetComponent<RigidbodyCharacter>().jumpPower);
     }
 }
