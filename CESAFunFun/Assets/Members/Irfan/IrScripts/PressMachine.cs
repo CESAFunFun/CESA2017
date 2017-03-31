@@ -8,8 +8,8 @@ public class PressMachine : MonoBehaviour
     private float speed = 5;
     [SerializeField]
     private float backSpeed = 5;
-    [SerializeField]
-    private float backTime = 0.5f;
+    //[SerializeField]
+    //private float backTime = 0.5f;
 
     public bool _actived = false;
 
@@ -27,10 +27,8 @@ public class PressMachine : MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-        if(time >= backTime * 60)
-            _actived = false;
-
-        Debug.Log(time);
+        //if(time >= backTime * 60)
+        //    _actived = false;
 
         MachineOn(_actived);
 
@@ -41,13 +39,18 @@ public class PressMachine : MonoBehaviour
         if (on)
         {
             transform.Translate(Vector3.down * speed * Time.deltaTime);
-            time++;
+            //time++;
         }
         else
         {
             transform.position = Vector3.MoveTowards(transform.position, startPos, backSpeed * Time.deltaTime);
-            time = 0;
+            //time = 0;
         }
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        _actived = false;
     }
 
 
