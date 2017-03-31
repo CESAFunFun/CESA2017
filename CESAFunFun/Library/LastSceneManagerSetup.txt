@@ -1,4 +1,8 @@
 sceneSetups:
+<<<<<<< HEAD
 - path: Assets/Members/Irfan/Floor.unity
+=======
+- path: Assets/Members/Ogawa/Ogawa.unity
+>>>>>>> a9c9242bbf697fb9be30e58445a039f145f14127
   isLoaded: 1
   isActive: 1

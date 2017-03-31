@@ -67,23 +67,24 @@ public class Tracking2 : MonoBehaviour {
         //指定範囲内なら移動しない
         if (distance < interval && distance > -interval)
         {
-
+            Vector3 velocity = new Vector3(0, 0, 0);
+            float speed = _target.GetComponent<RigidbodyCharacter>().moveSpeed;
+            //キャラクターの移動
+            character.Move(velocity, speed);
         }
         else
         {
             //ｘ座標を比較する
             if (Calcu(target.transform.position.x + interval, transform.position.x))
             {
-                //Vector3 velocity = new Vector3(-1, 0, 0);//_target.GetComponent<PlayerController>().velocity;
-                Vector3 velocity = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().velocity;
+                Vector3 velocity = new Vector3(-1, 0, 0);//_target.GetComponent<PlayerController>().velocity;
                 float speed = _target.GetComponent<RigidbodyCharacter>().moveSpeed;
                 //キャラクターの移動
                 character.Move(velocity, speed);
             }
             else
             {
-                //Vector3 velocity = new Vector3(1, 0, 0);//_target.GetComponent<PlayerController>().velocity;
-                Vector3 velocity = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().velocity;
+                Vector3 velocity = new Vector3(1, 0, 0);//_target.GetComponent<PlayerController>().velocity;
                 float speed = _target.GetComponent<RigidbodyCharacter>().moveSpeed;
                 //キャラクターの移動
                 character.Move(velocity, speed);
