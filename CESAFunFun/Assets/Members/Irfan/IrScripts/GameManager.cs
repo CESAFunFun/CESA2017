@@ -8,7 +8,11 @@ public class GameManager : MonoBehaviour
     private PressMachine[] pressMachines;
     [SerializeField]
     private GameObject[] playerChilds;
+    [SerializeField]
+    private GameObject goalText;
 
+
+    private GoalScript goalArea;
     private GameObject playerParent; 
     public static GameManager _instance = null;
 
@@ -25,6 +29,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         playerParent = GameObject.Find("Player");
+        goalArea = GameObject.Find("Goal").GetComponent<GoalScript>();
     }
 
     // Update is called once per frame
@@ -46,8 +51,7 @@ public class GameManager : MonoBehaviour
 
                 for(int j = 0; j < playerChilds.Length; j++ )
                 {
-                    Instantiate(playerChilds[j], new Vector3(1 - j, 1, 0), Quaternion.identity);
-                    
+                    Instantiate(playerChilds[j], new Vector3(1 - j, 1, 0), Quaternion.identity);  
                 }
                 pressMachines[i]._playerHit = false;
             }
@@ -55,5 +59,13 @@ public class GameManager : MonoBehaviour
             
         }
 
+        ShowGoal();
+    }
+
+    void ShowGoal()
+    {
+        if(goalArea._isGoal)
+            goalText.SetActive(true);
+        
     }
 }
