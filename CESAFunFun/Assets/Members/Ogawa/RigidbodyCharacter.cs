@@ -13,15 +13,17 @@ public class RigidbodyCharacter : MonoBehaviour {
     private Vector3 velocity;
     private Vector3 gravity;
 
-    public float moveSpeed = 1F;
-    public float jumpPower = 1F;
+    public float _moveSpeed = 1F;
+    public float _jumpPower = 1F;
 
     void Start() {
         // アタッチされているRigidbodyを取得
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         rigidbody.useGravity = false;
+        // 移動量を初期化
         velocity = Vector3.zero;
+        // 重力の方向の設定
         gravity = Physics.gravity;
         if (_down)
         {
@@ -63,8 +65,11 @@ public class RigidbodyCharacter : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision other) {
-        // 接地判定のフラグを変更
-        _isGrounded = true;
+        if (other.gameObject.tag == "Floor")
+        {
+            // 接地判定のフラグを変更
+            _isGrounded = true;
+        }
 
         //// タグ"Child"のみオブジェクト化する
         //if (tag == "Child")
