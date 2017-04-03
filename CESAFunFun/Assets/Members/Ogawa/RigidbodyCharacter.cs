@@ -65,6 +65,9 @@ public class RigidbodyCharacter : MonoBehaviour {
     }
 
     void OnCollisionEnter(Collision other) {
+        //左右の壁のtagを　FloorからWallに変更
+        //この場合のプログラムはFloorに接しているところが足場になるため
+        //壁に引っ付いたら、その高さが足場になってしまう。
         if (other.gameObject.tag == "Floor")
         {
             // 接地判定のフラグを変更
