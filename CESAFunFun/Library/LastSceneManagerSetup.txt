@@ -1,8 +1,1 @@
-sceneSetups:
-<<<<<<< HEAD
-- path: Assets/Members/Guttan/Scene/Guttan.unity
-=======
-- path: Assets/Members/Fijii/Fijii.unity
->>>>>>> e55811e8e4afab55396c6bf4d4802c39d75562a8
-  isLoaded: 1
-  isActive: 1
+sceneSetups: []
