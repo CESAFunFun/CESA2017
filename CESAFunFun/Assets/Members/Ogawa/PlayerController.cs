@@ -32,36 +32,40 @@ public class PlayerController : MonoBehaviour {
             // 移動の入力
             velocity.x = inputState.LeftStickAxis.x;
 
-            // TODO : キーボード側で同じ処理が記載されているので修正する
-            // XXX : 入力Releseが取れないとオブジェクト化できない
-            // 持ち上げるための衝突判定を有効化
-            if (inputState.X)
-            {
-                var obj = GameObject.FindGameObjectsWithTag("Child");
-                foreach (var o in obj)
-                {
-                    o.GetComponent<BoxCollider>().isTrigger = false;
-                }
-            }
-            else if(!inputState.X)
-            {
-                var obj = GameObject.FindGameObjectsWithTag("Child");
-                foreach (var o in obj)
-                {
-                    o.GetComponent<BoxCollider>().isTrigger = true;
-                }
-            }
+            //// TODO : キーボード側で同じ処理が記載されているので修正する
+            //// XXX : 入力Releseが取れないとオブジェクト化できない
+            //// 持ち上げるための衝突判定を有効化
+            //if (inputState.X)
+            //{
+            //    var obj = GameObject.FindGameObjectsWithTag("Child");
+            //    foreach (var o in obj)
+            //    {
+            //        o.GetComponent<BoxCollider>().isTrigger = false;
+            //    }
+            //}
+            //else if(!inputState.X)
+            //{
+            //    var obj = GameObject.FindGameObjectsWithTag("Child");
+            //    foreach (var o in obj)
+            //    {
+            //        o.GetComponent<BoxCollider>().isTrigger = true;
+            //    }
+            //}
 
-            // 投げる入力
-            if (inputState.Y)
-            {
-                ThrowChild();
-            }
+            //// 投げる入力
+            //if (inputState.Y)
+            //{
+            //    ThrowChild();
+            //}
 
             // ジャンプの入力と処理
             if (inputState.A)
             {
-                character.Jump(character.jumpPower);
+                // 接地していたら重力に適した跳躍処理
+                if (character._isGrounded)
+                {
+                    character.Jump(character._jumpPower);
+                }
             }
         }
         else
@@ -69,11 +73,11 @@ public class PlayerController : MonoBehaviour {
             // 移動の入力
             if(Input.GetKey(KeyCode.A))
             {
-                velocity.x = -character.moveSpeed;
+                velocity.x = -character._moveSpeed;
             }
             else if(Input.GetKey(KeyCode.D))
             {
-                velocity.x = +character.moveSpeed;
+                velocity.x = +character._moveSpeed;
             }
             else
             {
@@ -105,15 +109,19 @@ public class PlayerController : MonoBehaviour {
                 ThrowChild();
             }
 
-            // ジャンプの入力と処理
+            // ジャンプ入力
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                character.Jump(character.jumpPower);
+                // 接地していたら重力に適した跳躍処理
+                if (character._isGrounded)
+                {
+                    character.Jump(character._jumpPower);
+                }
             }
         }
 
         // キャラクターの移動
-        character.Move(velocity, character.moveSpeed);
+        character.Move(velocity, character._moveSpeed);
     }
 
     void ThrowChild() {
@@ -122,8 +130,8 @@ public class PlayerController : MonoBehaviour {
             // 子要素になっているものを外して前方向に投げる
             Transform child = transform.GetChild(0);
             child.transform.SetParent(null);
-            child.GetComponent<Rigidbody>().isKinematic = false;
-            child.GetComponent<Rigidbody>().velocity = transform.up * 3F + transform.forward * 3.5F;
+            //child.GetComponent<Rigidbody>().isKinematic = false;
+            //child.GetComponent<Rigidbody>().velocity = transform.up * 3F + transform.forward * 3.5F;
             // ここでキャラクターからオブジェクトに仕様変更される
             child.GetComponent<BoxCollider>().isTrigger = false;
             child.GetComponent<RigidbodyCharacter>()._objected = true;

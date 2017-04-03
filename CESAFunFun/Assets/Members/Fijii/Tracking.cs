@@ -29,18 +29,20 @@ public class Tracking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //ポジションの更新
-        PosUpdate();
-        //移動
-        Move();
-
-        //追従しているオブジェクトがジャンプしたら遅れてジャンプ
-        jumpflag = _target.GetComponent<RigidbodyCharacter>()._isGrounded;
-        if (!jumpflag)
+        if (!character._objected)
         {
-            Invoke("Jump", 0.2f);
-        }
+            //ポジションの更新
+            PosUpdate();
+            //移動
+            Move();
 
+            //追従しているオブジェクトがジャンプしたら遅れてジャンプ
+            jumpflag = _target.GetComponent<RigidbodyCharacter>()._isGrounded;
+            if (!jumpflag)
+            {
+                Invoke("Jump", 0.2f);
+            }
+        }
     }
 
     //ターゲットとのポジションを比較する
@@ -63,7 +65,7 @@ public class Tracking : MonoBehaviour
     void Move()
     {
 
-        float speed = _target.GetComponent<RigidbodyCharacter>().moveSpeed;
+        float speed = _target.GetComponent<RigidbodyCharacter>()._moveSpeed;
         float distance = target.transform.position.x - transform.position.x;
 
         //指定範囲内なら移動しない
@@ -95,6 +97,6 @@ public class Tracking : MonoBehaviour
     void Jump()
     {
         //プレイヤーと同じだけ飛ぶ
-        character.Jump(_target.GetComponent<RigidbodyCharacter>().jumpPower);
+        character.Jump(_target.GetComponent<RigidbodyCharacter>()._jumpPower);
     }
 }
