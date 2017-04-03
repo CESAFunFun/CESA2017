@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour {
                 var obj = GameObject.FindGameObjectsWithTag("Child");
                 foreach (var o in obj)
                 {
-                    o.GetComponent<MeshCollider>().isTrigger = false;
+                    o.GetComponent<BoxCollider>().isTrigger = false;
                 }
             }
             else if(!inputState.X)
@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour {
                 var obj = GameObject.FindGameObjectsWithTag("Child");
                 foreach (var o in obj)
                 {
-                    o.GetComponent<MeshCollider>().isTrigger = true;
+                    o.GetComponent<BoxCollider>().isTrigger = true;
                 }
             }
 
@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour {
                 var obj = GameObject.FindGameObjectsWithTag("Child");
                 foreach (var o in obj)
                 {
-                    o.GetComponent<MeshCollider>().isTrigger = false;
+                    o.GetComponent<BoxCollider>().isTrigger = false;
                 }
             }
             else if (Input.GetKeyUp(KeyCode.Z))
@@ -95,7 +95,7 @@ public class PlayerController : MonoBehaviour {
                 var obj = GameObject.FindGameObjectsWithTag("Child");
                 foreach (var o in obj)
                 {
-                    o.GetComponent<MeshCollider>().isTrigger = true;
+                    o.GetComponent<BoxCollider>().isTrigger = true;
                 }
             }
 
@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour {
             child.GetComponent<Rigidbody>().isKinematic = false;
             child.GetComponent<Rigidbody>().velocity = transform.up * 3F + transform.forward * 3.5F;
             // ここでキャラクターからオブジェクトに仕様変更される
-            child.GetComponent<MeshCollider>().isTrigger = false;
+            child.GetComponent<BoxCollider>().isTrigger = false;
             child.GetComponent<RigidbodyCharacter>()._objected = true;
         }
     }

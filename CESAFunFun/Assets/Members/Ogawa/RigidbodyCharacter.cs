@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(MeshCollider))]
 public class RigidbodyCharacter : MonoBehaviour {
 
     public bool _isGrounded = false;
     public bool _objected = false;
 
     private Rigidbody rigidbody;
-    private MeshCollider meshCollider;
     private Vector3 velocity;
 
     public float moveSpeed = 1F;
@@ -20,9 +18,6 @@ public class RigidbodyCharacter : MonoBehaviour {
         // アタッチされているRigidbodyを取得
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
-        // 衝突判定用に"MeshCollider"を採用
-        // InspecterでconvexとinflateMeshをtrueに設定してください
-        meshCollider = GetComponent<MeshCollider>();
         velocity = Vector3.zero;
     }
 
@@ -60,7 +55,7 @@ public class RigidbodyCharacter : MonoBehaviour {
             rigidbody.isKinematic = true;
             if (!_objected)
             {
-                GetComponent<MeshCollider>().isTrigger = true;
+                GetComponent<BoxCollider>().isTrigger = true;
             }
         }
     }
