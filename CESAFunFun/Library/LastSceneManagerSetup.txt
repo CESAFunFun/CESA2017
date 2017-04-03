@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Members/Irfan/Floor.unity
+- path: Assets/Members/Guttan/Scene/Guttan.unity
   isLoaded: 1
   isActive: 1
