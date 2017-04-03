@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(RigidbodyCharacter))]
 public class Tracking : MonoBehaviour
 {
 
     private RigidbodyCharacter character;
 
-    [SerializeField]
-    private GameObject _target;
+    public GameObject _target;
 
     private Transform target;
 
@@ -29,11 +29,12 @@ public class Tracking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //ポジションの更新
         PosUpdate();
-
+        //移動
         Move();
 
+        //追従しているオブジェクトがジャンプしたら遅れてジャンプ
         jumpflag = _target.GetComponent<RigidbodyCharacter>()._isGrounded;
         if (!jumpflag)
         {
@@ -62,13 +63,13 @@ public class Tracking : MonoBehaviour
     void Move()
     {
 
+        float speed = _target.GetComponent<RigidbodyCharacter>().moveSpeed;
         float distance = target.transform.position.x - transform.position.x;
 
         //指定範囲内なら移動しない
         if (distance < interval && distance > -interval)
         {
             Vector3 velocity = new Vector3(0, 0, 0);
-            float speed = _target.GetComponent<RigidbodyCharacter>().moveSpeed;
             //キャラクターの移動
             character.Move(velocity, speed);
         }
@@ -77,15 +78,13 @@ public class Tracking : MonoBehaviour
             //ｘ座標を比較する
             if (Calcu(target.transform.position.x + interval, transform.position.x))
             {
-                Vector3 velocity = new Vector3(-1, 0, 0);//_target.GetComponent<PlayerController>().velocity;
-                float speed = _target.GetComponent<RigidbodyCharacter>().moveSpeed;
+                Vector3 velocity = new Vector3(-1, 0, 0);
                 //キャラクターの移動
                 character.Move(velocity, speed);
             }
             else
             {
-                Vector3 velocity = new Vector3(1, 0, 0);//_target.GetComponent<PlayerController>().velocity;
-                float speed = _target.GetComponent<RigidbodyCharacter>().moveSpeed;
+                Vector3 velocity = new Vector3(1, 0, 0);
                 //キャラクターの移動
                 character.Move(velocity, speed);
             }
