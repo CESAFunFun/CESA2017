@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField]
-    private PressMachine[] pressMachines;
+
     [SerializeField]
     private GameObject[] playerChilds;
     [SerializeField]
     private GameObject goalText;
 
-
+    private PressMachine machineTop;
+    private PressMachine machineBottom;
     private GoalScript goalArea;
-    private GameObject playerParent; 
+    private GameObject playerParentTop; 
     public static GameManager _instance = null;
 
     void Awake()
@@ -28,7 +28,9 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        playerParent = GameObject.Find("Player");
+        playerParentTop = GameObject.FindGameObjectWithTag("Player");
+        machineTop = GameObject.Find("PressMachine/MachineTop").GetComponent<PressMachine>();
+        machineBottom = GameObject.Find("PressMachine/MachineBottom").GetComponent<PressMachine>();
         goalArea = GameObject.Find("Goal").GetComponent<GoalScript>();
     }
 
@@ -37,26 +39,21 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            for (int i = 0; i < pressMachines.Length; i++)
-            {
-                pressMachines[i]._actived = true;
-            }
-        }
+            machineTop._actived = true;
+            machineBottom._actived = true;
+        }      
 
-        for(int i = 0; i< pressMachines.Length; i++)
+        if (machineTop._playerHit || machineBottom._playerHit)
         {
-            if(pressMachines[i]._playerHit)
-            {
-                Destroy(playerParent);
+            Destroy(playerParentTop);
 
-                for(int j = 0; j < playerChilds.Length; j++ )
-                {
-                    Instantiate(playerChilds[j], new Vector3(1 - j, 1, 0), Quaternion.identity);  
-                }
-                pressMachines[i]._playerHit = false;
+            for (int j = 0; j < playerChilds.Length; j++)
+            {
+                Instantiate(playerChilds[j], new Vector3(1 - j, 1, 0), Quaternion.identity);
             }
 
-            
+            machineTop._playerHit = false;
+            machineBottom._playerHit = false;
         }
 
         ShowGoal();
