@@ -1,12 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
 - path: Assets/Scenes/Stage1.unity
-=======
-<<<<<<< HEAD
-- path: Assets/Members/Guttan/Scene/Guttan.unity
-=======
-- path: Assets/Members/Fijii/Fijii.unity
->>>>>>> e55811e8e4afab55396c6bf4d4802c39d75562a8
->>>>>>> f9df658bdcb1397aff8972e7840256ff0d00f4d4
   isLoaded: 1
   isActive: 1

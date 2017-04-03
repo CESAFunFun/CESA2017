@@ -8,8 +8,6 @@ public class PressMachine : MonoBehaviour
     private float speed = 5;
     [SerializeField]
     private float backSpeed = 5;
-    //[SerializeField]
-    //private float backTime = 0.5f;
 
     public bool _actived = false;
     public bool _playerHit = false;
@@ -22,18 +20,14 @@ public class PressMachine : MonoBehaviour
     void Start ()
     {
         startPos = new Vector3(transform.position.x, transform.position.y);
+        GetComponent<BoxCollider>().isTrigger = true;
         time = 0;
-
     }
 
     // Update is called once per frame
     void Update ()
     {
-        //if(time >= backTime * 60)
-        //    _actived = false;
-
         MachineOn(_actived);
-
     }
 
     public void MachineOn(bool on)
