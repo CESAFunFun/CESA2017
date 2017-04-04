@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour {
             //    var obj = GameObject.FindGameObjectsWithTag("Child");
             //    foreach (var o in obj)
             //    {
-            //        o.GetComponent<BoxCollider>().isTrigger = false;
+            //        o.GetComponent<Collider>().isTrigger = false;
             //    }
             //}
             //else if(!inputState.X)
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour {
             //    var obj = GameObject.FindGameObjectsWithTag("Child");
             //    foreach (var o in obj)
             //    {
-            //        o.GetComponent<BoxCollider>().isTrigger = true;
+            //        o.GetComponent<Collider>().isTrigger = true;
             //    }
             //}
 
@@ -65,11 +65,7 @@ public class PlayerController : MonoBehaviour {
             // ジャンプの入力と処理
             if (inputState.A)
             {
-                // 接地していたら重力に適した跳躍処理
-                if (character._isGrounded)
-                {
-                    character.Jump(character._jumpPower);
-                }
+                character.Jump(character._jumpPower);
             }
         }
         else
@@ -95,7 +91,7 @@ public class PlayerController : MonoBehaviour {
                 var obj = GameObject.FindGameObjectsWithTag("Child");
                 foreach (var o in obj)
                 {
-                    o.GetComponent<BoxCollider>().isTrigger = false;
+                    o.GetComponent<Collider>().isTrigger = false;
                 }
             }
             else if (Input.GetKeyUp(KeyCode.Z))
@@ -103,7 +99,7 @@ public class PlayerController : MonoBehaviour {
                 var obj = GameObject.FindGameObjectsWithTag("Child");
                 foreach (var o in obj)
                 {
-                    o.GetComponent<BoxCollider>().isTrigger = true;
+                    o.GetComponent<Collider>().isTrigger = true;
                 }
             }
 
@@ -116,11 +112,7 @@ public class PlayerController : MonoBehaviour {
             // ジャンプ入力
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                // 接地していたら重力に適した跳躍処理
-                if (character._isGrounded)
-                {
-                    character.Jump(character._jumpPower);
-                }
+                character.Jump(character._jumpPower);
             }
         }
 
@@ -137,7 +129,7 @@ public class PlayerController : MonoBehaviour {
             //child.GetComponent<Rigidbody>().isKinematic = false;
             //child.GetComponent<Rigidbody>().velocity = transform.up * 3F + transform.forward * 3.5F;
             // ここでキャラクターからオブジェクトに仕様変更される
-            child.GetComponent<BoxCollider>().isTrigger = false;
+            child.GetComponent<Collider>().isTrigger = false;
             child.GetComponent<RigidbodyCharacter>()._objected = true;
         }
     }
