@@ -15,16 +15,16 @@ public class ChildManager : MonoBehaviour {
 	}
 
     //子供の生成
-    void CreateChild(GameObject[] child)
+    public void CreateChild(GameObject[] child,Vector3 pos)
     {
         for (int i = 0; i < child.Length; i++)
         {
-            Instantiate(child[i], new Vector3(1 - i, 1, 0), Quaternion.identity);
+            Instantiate(child[i], pos, Quaternion.identity);
         }
     }
 
     //追従オブジェクトを決める
-    void TrackCharacter(GameObject predator,GameObject target)
+    public void TrackCharacter(GameObject predator,GameObject target)
     {
         predator.GetComponent<Tracking>()._target = target;
     }

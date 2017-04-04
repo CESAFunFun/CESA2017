@@ -14,8 +14,6 @@ public class PressMachine : MonoBehaviour
 
     private Vector3 startPos;
 
-    
-    
     // Use this for initialization
     void Start ()
     {
@@ -24,27 +22,19 @@ public class PressMachine : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
-        MachineOn(_actived);
+        if (_actived)
+            transform.position = Vector3.MoveTowards(transform.position, transform.position - Vector3.up * 5, speed * Time.deltaTime); 
+        else
+            transform.position = Vector3.MoveTowards(transform.position, startPos, backSpeed * Time.deltaTime);
+
     }
 
-    public void MachineOn(bool on)
-    {
-        if (on)
-        {
-            transform.Translate(Vector3.down * speed * Time.deltaTime);
-            //time++;
-        }
-        else
-        {
-            transform.position = Vector3.MoveTowards(transform.position, startPos, backSpeed * Time.deltaTime);
-            //time = 0;
-        }
-    }
 
     void OnTriggerEnter(Collider col)
     {
+
         if(col.gameObject.tag == "Floor")
             _actived = false;
 
@@ -53,6 +43,9 @@ public class PressMachine : MonoBehaviour
             col.gameObject.transform.position = new Vector3(transform.position.x + 10, transform.position.y * 2, transform.position.z);
             _playerHit = true;
         }
+
+        if (_actived && col.gameObject.tag == "Child")
+            Destroy(col.gameObject);
     }
 
 
