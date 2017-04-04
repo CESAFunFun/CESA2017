@@ -13,7 +13,7 @@ public class PressMachine : MonoBehaviour
     public bool _playerHit = false;
 
     private Vector3 startPos;
-    private float time;
+
     
     
     // Use this for initialization
@@ -21,7 +21,6 @@ public class PressMachine : MonoBehaviour
     {
         startPos = new Vector3(transform.position.x, transform.position.y);
         GetComponent<BoxCollider>().isTrigger = true;
-        time = 0;
     }
 
     // Update is called once per frame
@@ -49,9 +48,11 @@ public class PressMachine : MonoBehaviour
         if(col.gameObject.tag == "Floor")
             _actived = false;
 
-        if(col.gameObject.tag == "Player")
+        if (col.gameObject.tag == "Player")
+        {
+            col.gameObject.transform.position = new Vector3(transform.position.x + 10, transform.position.y * 2, transform.position.z);
             _playerHit = true;
-        
+        }
     }
 
 
