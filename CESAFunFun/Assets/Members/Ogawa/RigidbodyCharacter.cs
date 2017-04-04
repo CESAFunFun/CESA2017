@@ -14,11 +14,16 @@ public class RigidbodyCharacter : MonoBehaviour {
     public float moveSpeed = 1F;
     public float jumpPower = 1F;
 
+    public GameObject[] _objCol;
+
     void Start() {
         // アタッチされているRigidbodyを取得
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         velocity = Vector3.zero;
+
+        for (int i = 0; i < _objCol.Length; i++)
+            Physics.IgnoreCollision(_objCol[i].GetComponent<Collider>(), GetComponent<Collider>());
     }
 
     void Update() {

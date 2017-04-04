@@ -11,14 +11,18 @@ public class PlayerController : MonoBehaviour {
     private GamePad.Index playerIndex;
 
     private GamepadState inputState;
+
     [HideInInspector]
     public Vector3 velocity;
+
+    
 
     // Use this for initialization
     void Start()
     {
         character = GetComponent<RigidbodyCharacter>();
         velocity = Vector3.zero;
+       
     }
 
     // Update is called once per frame
