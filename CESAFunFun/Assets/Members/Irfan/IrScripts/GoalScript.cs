@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class GoalScript : MonoBehaviour {
     public bool _isGoal = false;
-    
-    void OnTriggerEnter(Collider col)
+
+    void OnTriggerStay(Collider col)
     {
-        if(col.gameObject.tag == "Player")
+        if (col.gameObject.tag == "Player")
             _isGoal = true;
+    }
+
+    void OnTriggerExit(Collider col)
+    {
+        //if (col.gameObject.tag == "Player")
+            _isGoal = false;
     }
     
 }
