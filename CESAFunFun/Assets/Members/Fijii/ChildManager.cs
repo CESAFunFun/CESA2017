@@ -20,6 +20,7 @@ public class ChildManager : MonoBehaviour {
         for (int i = 0; i < child.Length; i++)
         {
             Instantiate(child[i], pos, Quaternion.identity);
+            pos.x += i;
         }
     }
 

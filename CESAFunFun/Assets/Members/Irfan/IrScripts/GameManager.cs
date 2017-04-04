@@ -9,13 +9,19 @@ public class GameManager : MonoBehaviour
     private GameObject[] playerChilds;
     [SerializeField]
     private GameObject goalText;
+    [SerializeField]
+    private GameObject pressMachine;
+    [SerializeField]
+    private GoalScript goalArea;
+    [SerializeField]
+    private GameObject playerParentTop;
+    [SerializeField]
+    private GameObject playerParentBottom;
 
     private ChildManager childManager;
     private PressMachine machineTop;
     private PressMachine machineBottom;
-    private GoalScript goalArea;
-    private RigidbodyCharacter playerParentTop;
-    private RigidbodyCharacter playerParentBottom; 
+
     public static GameManager _instance = null;
 
     void Awake()
@@ -30,12 +36,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        playerParentTop = GameObject.Find("Player_Top").GetComponent<RigidbodyCharacter>();
-        playerParentBottom = GameObject.Find("Player_Bottom").GetComponent<RigidbodyCharacter>();
-        machineTop = GameObject.Find("PressMachine/MachineTop").GetComponent<PressMachine>();
-        machineBottom = GameObject.Find("PressMachine/MachineBottom").GetComponent<PressMachine>();
-        goalArea = GameObject.Find("Goal").GetComponent<GoalScript>();
-        childManager = gameObject.GetComponent<ChildManager>();
+        //playerParentTop = GetComponent<RigidbodyCharacter>();
+        //playerParentBottom.GetComponent<RigidbodyCharacter>();
+        //goalArea.GetComponent<GoalScript>();
+        childManager = GetComponent<ChildManager>();
+
+        machineTop = pressMachine.transform.GetChild(0).GetComponent<PressMachine>();
+        machineBottom = pressMachine.transform.GetChild(1).GetComponent<PressMachine>();
     }
 
     // Update is called once per frame
@@ -65,22 +72,25 @@ public class GameManager : MonoBehaviour
         if (machineTop._playerHit)
         {
             machineTop._playerHit = false;
-            //childManager.CreateChild(playerChilds, new Vector3(playerChilds.Length - 1, 1, 0));
+            childManager.CreateChild(playerChilds, new Vector3(playerChilds.Length - 1, 1, 0));
+            //playerParentTop.Jump(playerParentTop._jumpPower);
             for (int i = 0; i < playerChilds.Length; i++)
             {
-                Instantiate(playerChilds[i], new Vector3(1 - i, -1, 0), Quaternion.identity);
+                if (i == 0)
+                {
+                    Debug.Log("aaa");
+                    childManager.TrackCharacter(playerChilds[i], playerParentTop);
+                }
+                else
+                    childManager.TrackCharacter(playerChilds[i - 1], playerChilds[i]);
             }
-            playerParentTop.Jump(playerParentTop._jumpPower);          
         }
 
         if (machineBottom._playerHit)
         {
             machineBottom._playerHit = false;
-            for (int i = 0; i < playerChilds.Length; i++)
-            {
-                Instantiate(playerChilds[i], new Vector3(1 - i, -1, 0), Quaternion.identity);   
-            }
-            playerParentBottom.Jump(playerParentBottom._jumpPower);          
+            //childManager.CreateChild(playerChilds, new Vector3(playerChilds.Length - 1, -1, 0));
+            //playerParentBottom.Jump(playerParentBottom._jumpPower);          
         }
     }
 }
