@@ -5,14 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class RigidbodyCharacter : MonoBehaviour {
 
+    public bool _down = true;
     public bool _isGrounded = false;
     public bool _objected = false;
 
     private Rigidbody rigidbody;
     private Vector3 velocity;
+    private Vector3 gravity;
 
-    public float moveSpeed = 1F;
-    public float jumpPower = 1F;
+    public float _moveSpeed = 1F;
+    public float _jumpPower = 1F;
 
     public GameObject[] _objCol;
 
@@ -20,14 +22,33 @@ public class RigidbodyCharacter : MonoBehaviour {
         // アタッチされているRigidbodyを取得
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+        rigidbody.useGravity = false;
+        // 移動量を初期化
         velocity = Vector3.zero;
+<<<<<<< HEAD
 
         for (int i = 0; i < _objCol.Length; i++)
             Physics.IgnoreCollision(_objCol[i].GetComponent<Collider>(), GetComponent<Collider>());
+=======
+        // 重力の方向の設定
+        gravity = Physics.gravity;
+        if (_down)
+        {
+            gravity *= -1F;
+        }
+>>>>>>> 5d995d378b0e293731b58c252e965e58319e668c
     }
 
     void Update() {
-        // TODO : 自前の重力処理が記載されます
+        // 自前で重力と接地の判定を計算
+        if (_isGrounded)
+        {
+            velocity.y = 0F;
+        }
+        else
+        {
+            velocity -= gravity * Time.deltaTime;
+        }
     }
 
     void FixedUpdate() {
@@ -39,7 +60,7 @@ public class RigidbodyCharacter : MonoBehaviour {
         // XXX:Ｙ軸を意図的に排除している
         velocity.x = v.x * speed;
         velocity.z = v.z * speed;
-        transform.LookAt(transform.position + velocity);
+        transform.LookAt(transform.position + new Vector3(velocity.x, 0F, velocity.z));
     }
 
     public void Jump(float power) {
@@ -47,21 +68,28 @@ public class RigidbodyCharacter : MonoBehaviour {
         if (_isGrounded)
         {
             _isGrounded = false;
-            rigidbody.AddForce(transform.up * power * 100F);
+            velocity.y = _down ? power : -power;
         }
     }
 
     void OnCollisionEnter(Collision other) {
-        // 接地判定のフラグを変更
-        _isGrounded = true;
-        // タグ"Child"のみオブジェクト化する
-        if (tag == "Child")
+        //左右の壁のtagを　FloorからWallに変更
+        //この場合のプログラムはFloorに接しているところが足場になるため
+        //壁に引っ付いたら、その高さが足場になってしまう。
+        if (other.gameObject.tag == "Floor")
         {
-            rigidbody.isKinematic = true;
-            if (!_objected)
-            {
-                GetComponent<BoxCollider>().isTrigger = true;
-            }
+            // 接地判定のフラグを変更
+            _isGrounded = true;
         }
+
+        //// タグ"Child"のみオブジェクト化する
+        //if (tag == "Child")
+        //{
+        //    rigidbody.isKinematic = true;
+        //    if (!_objected)
+        //    {
+        //        GetComponent<BoxCollider>().isTrigger = true;
+        //    }
+        //}
     }
 }
