@@ -86,22 +86,24 @@ public class PlayerController : MonoBehaviour {
 
             // TODO : ゲームパッド側で同じ処理が記載されているので修正する
             // 持ち上げるための衝突判定を有効化
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                var obj = GameObject.FindGameObjectsWithTag("Child");
-                foreach (var o in obj)
-                {
-                    o.GetComponent<Collider>().isTrigger = false;
-                }
-            }
-            else if (Input.GetKeyUp(KeyCode.Z))
-            {
-                var obj = GameObject.FindGameObjectsWithTag("Child");
-                foreach (var o in obj)
-                {
-                    o.GetComponent<Collider>().isTrigger = true;
-                }
-            }
+            //if (Input.GetKeyDown(KeyCode.Z))
+            //{
+            //    // ゲーム内の"Child"を取得して衝突判定を無視する
+            //    character._children = GameObject.FindGameObjectsWithTag("Child");
+            //    for (int i = 0; i < character._children.Length; i++)
+            //    {
+            //        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), false);
+            //    }
+            //}
+            //else if (Input.GetKeyUp(KeyCode.Z))
+            //{
+            //    // ゲーム内の"Child"を取得して衝突判定を無視する
+            //    character._children = GameObject.FindGameObjectsWithTag("Child");
+            //    for (int i = 0; i < character._children.Length; i++)
+            //    {
+            //        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
+            //    }
+            //}
 
             // 投げる入力
             if (Input.GetKey(KeyCode.X))

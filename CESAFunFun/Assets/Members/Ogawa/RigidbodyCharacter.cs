@@ -82,15 +82,5 @@ public class RigidbodyCharacter : MonoBehaviour {
             // 接地判定のフラグを変更
             _isGrounded = true;
         }
-
-        //// タグ"Child"のみオブジェクト化する
-        //if (tag == "Child")
-        //{
-        //    rigidbody.isKinematic = true;
-        //    if (!_objected)
-        //    {
-        //        GetComponent<BoxCollider>().isTrigger = true;
-        //    }
-        //}
     }
 }
