@@ -18,10 +18,12 @@ public class GoalScriptsAndo : MonoBehaviour
     private List<GameObject> itemList = new List<GameObject>();
     //Item数のカウント
     public int _itemCount;
+    //goal flag
+    public bool _isGoal;
 
 	// Use this for initialization
 	void Start () {
-        
+        _isGoal = false;
 	}
 	
     void Update()
@@ -29,7 +31,7 @@ public class GoalScriptsAndo : MonoBehaviour
         //設定値と同じ数値であれば Goalしたことをおしえる
         if (_itemCount == itemList.Count)
         {
-            Debug.Log("goal");
+            _isGoal = true;
         }
        
         //衝突オブジェクトの誤差がないようにクリアを定期的にする

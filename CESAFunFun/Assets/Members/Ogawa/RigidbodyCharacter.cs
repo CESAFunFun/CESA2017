@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class RigidbodyCharacter : MonoBehaviour {
 
-    public bool _down = true;
+    public bool _downGravity = true;
     public bool _isGrounded = false;
     public bool _objected = false;
 
@@ -30,15 +30,21 @@ public class RigidbodyCharacter : MonoBehaviour {
             Physics.IgnoreCollision(_objCol[i].GetComponent<Collider>(), GetComponent<Collider>());
 
         // 重力の方向の設定
-        gravity = Physics.gravity;
-        if (_down)
+        gravity = -Physics.gravity;
+        if (_downGravity)
         {
             gravity *= -1F;
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 113df43efb21b08ae097a470246049e984439136
     }
 
     void Update() {
+    }
+
+    void FixedUpdate() {
         // 自前で重力と接地の判定を計算
         if (_isGrounded)
         {
@@ -46,11 +52,9 @@ public class RigidbodyCharacter : MonoBehaviour {
         }
         else
         {
-            velocity -= gravity * Time.deltaTime;
+            rigidbody.AddForce(gravity);
         }
-    }
 
-    void FixedUpdate() {
         // Rigidbodyでの位置座標を更新
         rigidbody.MovePosition(transform.position + velocity * Time.deltaTime);
     }
@@ -67,7 +71,9 @@ public class RigidbodyCharacter : MonoBehaviour {
         if (_isGrounded)
         {
             _isGrounded = false;
-            velocity.y = _down ? power : -power;
+            // 自身の上方向に跳躍
+            Vector3 upVec = _downGravity ? Vector3.up : Vector3.down;
+            rigidbody.AddForce(upVec * power * 100F);
         }
     }
 
@@ -80,15 +86,5 @@ public class RigidbodyCharacter : MonoBehaviour {
             // 接地判定のフラグを変更
             _isGrounded = true;
         }
-
-        //// タグ"Child"のみオブジェクト化する
-        //if (tag == "Child")
-        //{
-        //    rigidbody.isKinematic = true;
-        //    if (!_objected)
-        //    {
-        //        GetComponent<BoxCollider>().isTrigger = true;
-        //    }
-        //}
     }
 }
