@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviour
     private PressMachine machineTop;
     private PressMachine machineBottom;
     private GoalScript goalArea;
-    private GameObject playerParentTop; 
+    private RigidbodyCharacter playerParentTop;
+    private RigidbodyCharacter playerParentBottom; 
     public static GameManager _instance = null;
 
     void Awake()
@@ -28,7 +29,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        playerParentTop = GameObject.FindGameObjectWithTag("Player");
+        playerParentTop = GameObject.Find("Player_Top").GetComponent<RigidbodyCharacter>();
+        playerParentBottom = GameObject.Find("Player_Bottom").GetComponent<RigidbodyCharacter>();
         machineTop = GameObject.Find("PressMachine/MachineTop").GetComponent<PressMachine>();
         machineBottom = GameObject.Find("PressMachine/MachineBottom").GetComponent<PressMachine>();
         goalArea = GameObject.Find("Goal").GetComponent<GoalScript>();
@@ -43,19 +45,7 @@ public class GameManager : MonoBehaviour
             machineBottom._actived = true;
         }      
 
-        if (machineTop._playerHit || machineBottom._playerHit)
-        {
-            Destroy(playerParentTop);
-
-            for (int j = 0; j < playerChilds.Length; j++)
-            {
-                Instantiate(playerChilds[j], new Vector3(1 - j, 1, 0), Quaternion.identity);
-            }
-
-            machineTop._playerHit = false;
-            machineBottom._playerHit = false;
-        }
-
+        CreateChild();
         ShowGoal();
     }
 
@@ -64,5 +54,31 @@ public class GameManager : MonoBehaviour
         if(goalArea._isGoal)
             goalText.SetActive(true);
         
+    }
+    
+    void CreateChild()
+    {
+        if (machineTop._playerHit)
+        {
+            for (int j = 0; j < playerChilds.Length; j++)
+            {
+                Instantiate(playerChilds[j], new Vector3(1 - j, 1, 0), Quaternion.identity);
+            }
+            playerParentTop.Jump(playerParentTop._jumpPower);
+
+            machineTop._playerHit = false;
+        }
+
+        if (machineBottom._playerHit)
+        {
+            for (int j = 0; j < playerChilds.Length; j++)
+            {
+                Instantiate(playerChilds[j], new Vector3(1 - j, -1, 0), Quaternion.identity);
+            }
+
+            playerParentBottom.Jump(playerParentBottom._jumpPower);
+
+            machineBottom._playerHit = false;
+        }
     }
 }
