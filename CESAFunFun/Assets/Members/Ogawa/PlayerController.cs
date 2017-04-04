@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour {
             //    var obj = GameObject.FindGameObjectsWithTag("Child");
             //    foreach (var o in obj)
             //    {
-            //        o.GetComponent<BoxCollider>().isTrigger = false;
+            //        o.GetComponent<Collider>().isTrigger = false;
             //    }
             //}
             //else if(!inputState.X)
@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour {
             //    var obj = GameObject.FindGameObjectsWithTag("Child");
             //    foreach (var o in obj)
             //    {
-            //        o.GetComponent<BoxCollider>().isTrigger = true;
+            //        o.GetComponent<Collider>().isTrigger = true;
             //    }
             //}
 
@@ -65,11 +65,7 @@ public class PlayerController : MonoBehaviour {
             // ジャンプの入力と処理
             if (inputState.A)
             {
-                // 接地していたら重力に適した跳躍処理
-                if (character._isGrounded)
-                {
-                    character.Jump(character._jumpPower);
-                }
+                character.Jump(character._jumpPower);
             }
         }
         else
@@ -90,22 +86,24 @@ public class PlayerController : MonoBehaviour {
 
             // TODO : ゲームパッド側で同じ処理が記載されているので修正する
             // 持ち上げるための衝突判定を有効化
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-                var obj = GameObject.FindGameObjectsWithTag("Child");
-                foreach (var o in obj)
-                {
-                    o.GetComponent<BoxCollider>().isTrigger = false;
-                }
-            }
-            else if (Input.GetKeyUp(KeyCode.Z))
-            {
-                var obj = GameObject.FindGameObjectsWithTag("Child");
-                foreach (var o in obj)
-                {
-                    o.GetComponent<BoxCollider>().isTrigger = true;
-                }
-            }
+            //if (Input.GetKeyDown(KeyCode.Z))
+            //{
+            //    // ゲーム内の"Child"を取得して衝突判定を無視する
+            //    character._children = GameObject.FindGameObjectsWithTag("Child");
+            //    for (int i = 0; i < character._children.Length; i++)
+            //    {
+            //        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), false);
+            //    }
+            //}
+            //else if (Input.GetKeyUp(KeyCode.Z))
+            //{
+            //    // ゲーム内の"Child"を取得して衝突判定を無視する
+            //    character._children = GameObject.FindGameObjectsWithTag("Child");
+            //    for (int i = 0; i < character._children.Length; i++)
+            //    {
+            //        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
+            //    }
+            //}
 
             // 投げる入力
             if (Input.GetKey(KeyCode.X))
@@ -116,11 +114,7 @@ public class PlayerController : MonoBehaviour {
             // ジャンプ入力
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                // 接地していたら重力に適した跳躍処理
-                if (character._isGrounded)
-                {
-                    character.Jump(character._jumpPower);
-                }
+                character.Jump(character._jumpPower);
             }
         }
 
@@ -137,7 +131,7 @@ public class PlayerController : MonoBehaviour {
             //child.GetComponent<Rigidbody>().isKinematic = false;
             //child.GetComponent<Rigidbody>().velocity = transform.up * 3F + transform.forward * 3.5F;
             // ここでキャラクターからオブジェクトに仕様変更される
-            child.GetComponent<BoxCollider>().isTrigger = false;
+            child.GetComponent<Collider>().isTrigger = false;
             child.GetComponent<RigidbodyCharacter>()._objected = true;
         }
     }
