@@ -46,7 +46,5 @@ public class GoalScriptsAndo : MonoBehaviour
         {
             itemList.Add(other.gameObject);
         }
-        
-
     }
 }

@@ -25,18 +25,17 @@ public class RigidbodyCharacter : MonoBehaviour {
         rigidbody.useGravity = false;
         // 移動量を初期化
         velocity = Vector3.zero;
-<<<<<<< HEAD
 
         for (int i = 0; i < _objCol.Length; i++)
             Physics.IgnoreCollision(_objCol[i].GetComponent<Collider>(), GetComponent<Collider>());
-=======
+
         // 重力の方向の設定
         gravity = Physics.gravity;
         if (_down)
         {
             gravity *= -1F;
         }
->>>>>>> 5d995d378b0e293731b58c252e965e58319e668c
+
     }
 
     void Update() {

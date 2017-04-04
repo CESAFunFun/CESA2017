@@ -53,15 +53,17 @@ public class GameManager : MonoBehaviour
 
     void ShowGoal()
     {
+        /*
         if (goalArea._isGoal)
             goalText.SetActive(true);
         else
             goalText.SetActive(false);
-        
+        */
     }
     
     void CreateChild()
     {
+        /*
         if (machineTop._playerHit)
         {
             machineTop._playerHit = false;
@@ -82,5 +84,6 @@ public class GameManager : MonoBehaviour
             }
             playerParentBottom.Jump(playerParentBottom._jumpPower);          
         }
+        */
     }
 }
