@@ -35,14 +35,6 @@ public class RigidbodyCharacter : MonoBehaviour {
         {
             gravity *= -1F;
         }
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> 113df43efb21b08ae097a470246049e984439136
->>>>>>> 59aafa2c56c722ad20ff0b68e5f926b19a5dd2dc
     }
 
     void Update() {
