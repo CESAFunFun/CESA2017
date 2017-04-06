@@ -55,22 +55,6 @@ public class PlayerController : MonoBehaviour {
             //    }
             //}
 
-            // 持ち上げるための衝突判定を有効化
-            if (Input.GetKeyDown(KeyCode.Z))
-            {
-            }
-            else if (Input.GetKeyUp(KeyCode.Z))
-            {
-                // ゲーム内の"Child"を取得して衝突判定を無効化する
-                character._children = GameObject.FindGameObjectsWithTag("Child");
-                for (int i = 0; i < character._children.Length; i++)
-                {
-                    if (!character._children[i].GetComponent<RigidbodyCharacter>()._objected)
-                    {
-                        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
-                    }
-                }
-            }
             // 投げる入力
             if (inputState.Y)
             {
@@ -122,7 +106,10 @@ public class PlayerController : MonoBehaviour {
                 character._children = GameObject.FindGameObjectsWithTag("Child");
                 for (int i = 0; i < character._children.Length; i++)
                 {
-                    Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), false);
+                    //if (character._children[i].GetComponent<RigidbodyCharacter>()._objected)
+                    {
+                        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), false);
+                    }
                 }
             }
             else if (Input.GetKeyUp(KeyCode.Z))

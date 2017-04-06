@@ -26,12 +26,8 @@ public class RigidbodyCharacter : MonoBehaviour {
         // 移動量を初期化
         velocity = Vector3.zero;
 
-        // 子要素との衝突判定は無視する
-        _children = GameObject.FindGameObjectsWithTag("Child");
-        for (int i = 0; i < _children.Length; i++)
-        {
-            Physics.IgnoreCollision(_children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
-        }
+        // タグ"Child"との衝突は無効化する
+        IgnoreCharacter("Child", true);
 
         // 重力の方向の設定
         gravity = -Physics.gravity;
@@ -74,6 +70,15 @@ public class RigidbodyCharacter : MonoBehaviour {
             // 自身の上方向に跳躍
             Vector3 upVec = _downGravity ? Vector3.up : Vector3.down;
             rigidbody.AddForce(upVec * power * 100F);
+        }
+    }
+
+    public void IgnoreCharacter(string tag, bool ignore) {
+        // 子要素との衝突判定は無視する
+        _children = GameObject.FindGameObjectsWithTag(tag);
+        for (int i = 0; i < _children.Length; i++)
+        {
+            Physics.IgnoreCollision(_children[i].GetComponent<Collider>(), GetComponent<Collider>(), ignore);
         }
     }
 
