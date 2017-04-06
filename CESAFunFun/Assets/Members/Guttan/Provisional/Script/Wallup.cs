@@ -20,23 +20,40 @@ public class Wallup : MonoBehaviour {
     [SerializeField]
     private GameObject wallbot;
 
+    //移動先ポジション設定
+    public Transform _topTarget;
+    public Transform _botTarget;
+    //Flag管理
+    private bool _isGoalFlag;
+    //timeカウント
+    private float timer;
+
+
 	// Use this for initialization
 	void Start ()
     {
-       // wallarea = GameObject.Find("Goal/GoalMarker_Top").GetComponent<GoalScriptsAndo>();
+        // wallarea = GameObject.Find("Goal/GoalMarker_Top").GetComponent<GoalScriptsAndo>();
         //Debug.Log(wallarea);
+        timer = 0;
+        _isGoalFlag = false;
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-       
-        if (wallarea1._isGoal&&wallarea2._isGoal)
+       //目的数達していたらゴールゲートを開ける
+        if (wallarea1._isGoal&&wallarea2._isGoal&&!_isGoalFlag)
         {
-            walltop.transform.position += new Vector3(0.0f, 2f, 0f);
-            wallbot.transform.position -= new Vector3(0.0f, 2f, 0f);
+            //walltop.transform.position += new Vector3(0.0f, 2f, 0f);
+            //wallbot.transform.position -= new Vector3(0.0f, 2f, 0f);
+            timer++;
+            walltop.transform.position += new Vector3(0.0f, 0.1f, 0.0f);
+            wallbot.transform.position -= new Vector3(0.0f, 0.1f, 0.0f);
+            if (timer>=20)
+            {
+                _isGoalFlag = true;
+            }
         }
-        
 
-	}
+    }
 }
