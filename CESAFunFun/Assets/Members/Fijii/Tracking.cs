@@ -15,15 +15,12 @@ public class Tracking : MonoBehaviour
     [SerializeField]
     private float interval;
 
-    private float time;
-
     private bool jumpflag;
 
     // Use this for initialization
     void Start()
     {
         character = GetComponent<RigidbodyCharacter>();
-        time = 0F;
     }
 
     // Update is called once per frame
