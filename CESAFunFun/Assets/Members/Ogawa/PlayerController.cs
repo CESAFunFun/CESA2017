@@ -87,11 +87,11 @@ public class PlayerController : MonoBehaviour {
             // 移動の入力
             if(Input.GetKey(KeyCode.A))
             {
-                velocity.x = -character._moveSpeed;
+                velocity = Vector3.left;
             }
             else if(Input.GetKey(KeyCode.D))
             {
-                velocity.x = +character._moveSpeed;
+                velocity = Vector3.right;
             }
             else
             {

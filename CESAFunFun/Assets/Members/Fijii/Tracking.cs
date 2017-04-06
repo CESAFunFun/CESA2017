@@ -21,6 +21,8 @@ public class Tracking : MonoBehaviour
     void Start()
     {
         character = GetComponent<RigidbodyCharacter>();
+        character._moveSpeed = _target.GetComponent<RigidbodyCharacter>()._moveSpeed;
+        character._jumpPower = _target.GetComponent<RigidbodyCharacter>()._jumpPower;
     }
 
     // Update is called once per frame
@@ -62,31 +64,26 @@ public class Tracking : MonoBehaviour
     //移動
     void Move()
     {
-
-        float speed = _target.GetComponent<RigidbodyCharacter>()._moveSpeed;
         float distance = target.transform.position.x - transform.position.x;
 
         //指定範囲内なら移動しない
         if (distance < interval && distance > -interval)
         {
-            Vector3 velocity = new Vector3(0, 0, 0);
             //キャラクターの移動
-            character.Move(velocity, speed);
+            character.Move(Vector3.zero, character._moveSpeed);
         }
         else
         {
             //ｘ座標を比較する
             if (Calcu(target.transform.position.x + interval, transform.position.x))
             {
-                Vector3 velocity = new Vector3(-1, 0, 0);
                 //キャラクターの移動
-                character.Move(velocity, speed);
+                character.Move(Vector3.left, character._moveSpeed);
             }
             else
             {
-                Vector3 velocity = new Vector3(1, 0, 0);
                 //キャラクターの移動
-                character.Move(velocity, speed);
+                character.Move(Vector3.right, character._moveSpeed);
             }
         }
     }
