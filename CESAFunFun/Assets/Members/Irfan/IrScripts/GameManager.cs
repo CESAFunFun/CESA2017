@@ -70,17 +70,16 @@ public class GameManager : MonoBehaviour
     
     void CreateChild()
     {
-        /*
+        Debug.Log("aaa");
         if (machineTop._playerHit)
         {
+            Debug.Log("bbb");
             machineTop._playerHit = false;
             childManager.CreateChild(playerChilds, new Vector3(playerChilds.Length - 1, 1, 0));
-            //playerParentTop.Jump(playerParentTop._jumpPower);
             for (int i = 0; i < playerChilds.Length; i++)
             {
                 if (i == 0)
                 {
-                    Debug.Log("aaa");
                     childManager.TrackCharacter(playerChilds[i], playerParentTop);
                 }
                 else
@@ -94,6 +93,6 @@ public class GameManager : MonoBehaviour
             //childManager.CreateChild(playerChilds, new Vector3(playerChilds.Length - 1, -1, 0));
             //playerParentBottom.Jump(playerParentBottom._jumpPower);          
         }
-        */
+        
     }
 }
