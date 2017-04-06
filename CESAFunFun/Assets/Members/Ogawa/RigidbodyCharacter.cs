@@ -16,7 +16,7 @@ public class RigidbodyCharacter : MonoBehaviour {
     public float _moveSpeed = 1F;
     public float _jumpPower = 1F;
 
-    public GameObject[] _objCol;
+    //public GameObject[] _children;
 
     void Start() {
         // アタッチされているRigidbodyを取得
@@ -26,8 +26,12 @@ public class RigidbodyCharacter : MonoBehaviour {
         // 移動量を初期化
         velocity = Vector3.zero;
 
-        for (int i = 0; i < _objCol.Length; i++)
-            Physics.IgnoreCollision(_objCol[i].GetComponent<Collider>(), GetComponent<Collider>());
+        // 子要素の衝突判定は無視する
+        var _children = GameObject.FindGameObjectsWithTag("Child");
+        for (int i = 0; i < _children.Length; i++)
+        {
+            Physics.IgnoreCollision(_children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
+        }
 
         // 重力の方向の設定
         gravity = -Physics.gravity;

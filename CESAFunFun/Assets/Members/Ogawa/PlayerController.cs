@@ -10,24 +10,21 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     private GamePad.Index playerIndex;
 
-    private GamepadState inputState;
-
     [HideInInspector]
     public Vector3 velocity;
 
-    
+    private GamepadState inputState;
+
+    public bool _isPressMachineActived { get; private set; }
 
     // Use this for initialization
-    void Start()
-    {
+    void Start() {
         character = GetComponent<RigidbodyCharacter>();
         velocity = Vector3.zero;
-       
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         // インスペクターからゲームパッドを取得
         inputState = GetGamePad(playerIndex);
 
@@ -61,6 +58,9 @@ public class PlayerController : MonoBehaviour {
             //{
             //    ThrowChild();
             //}
+
+            // プレス機の稼働を許可を入力
+            _isPressMachineActived = (inputState.LeftTrigger != 0) ? true : false;
 
             // ジャンプの入力と処理
             if (inputState.A)
@@ -110,6 +110,9 @@ public class PlayerController : MonoBehaviour {
             {
                 ThrowChild();
             }
+
+            // プレス機の稼働を許可を入力
+            _isPressMachineActived = (Input.GetKey(KeyCode.W)) ? true : false;
 
             // ジャンプ入力
             if (Input.GetKeyDown(KeyCode.Space))
