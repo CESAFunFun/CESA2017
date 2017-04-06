@@ -35,11 +35,17 @@ public class GoalScript : MonoBehaviour
 
     void Update()
     {
+        
         //設定値と同じ数値であれば Goalしたことをおしえる
         if (_itemCount == itemList.Count)
         {
             _isGoal = true;
         }
+        else
+        {
+            _isGoal = false;
+        }
+        Debug.Log(itemList.Count);
 
         //衝突オブジェクトの誤差がないようにクリアを定期的にする
         itemList.Clear();
