@@ -24,6 +24,12 @@ public class ChildManager : MonoBehaviour {
         }
     }
 
+    public GameObject CreateChild(GameObject prefab, Vector3 position)
+    {
+        return Instantiate(prefab, position, Quaternion.identity);
+    }
+
+
     //追従オブジェクトを決める
     public void TrackCharacter(GameObject predator,GameObject target)
     {
