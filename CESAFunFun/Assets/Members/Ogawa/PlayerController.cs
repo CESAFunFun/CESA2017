@@ -10,24 +10,21 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     private GamePad.Index playerIndex;
 
-    private GamepadState inputState;
-
     [HideInInspector]
     public Vector3 velocity;
 
-    
+    private GamepadState inputState;
+
+    public bool _isPressMachineActived { get; private set; }
 
     // Use this for initialization
-    void Start()
-    {
+    void Start() {
         character = GetComponent<RigidbodyCharacter>();
         velocity = Vector3.zero;
-       
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         // インスペクターからゲームパッドを取得
         inputState = GetGamePad(playerIndex);
 
@@ -41,26 +38,43 @@ public class PlayerController : MonoBehaviour {
             //// 持ち上げるための衝突判定を有効化
             //if (inputState.X)
             //{
-            //    var obj = GameObject.FindGameObjectsWithTag("Child");
-            //    foreach (var o in obj)
+            //    // ゲーム内の"Child"を取得して衝突判定を有効化する
+            //    character._children = GameObject.FindGameObjectsWithTag("Child");
+            //    for (int i = 0; i < character._children.Length; i++)
             //    {
-            //        o.GetComponent<Collider>().isTrigger = false;
+            //        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), false);
             //    }
             //}
-            //else if(!inputState.X)
+            //else if (!inputState.X)
             //{
-            //    var obj = GameObject.FindGameObjectsWithTag("Child");
-            //    foreach (var o in obj)
+            //    // ゲーム内の"Child"を取得して衝突判定を無効化する
+            //    character._children = GameObject.FindGameObjectsWithTag("Child");
+            //    for (int i = 0; i < character._children.Length; i++)
             //    {
-            //        o.GetComponent<Collider>().isTrigger = true;
+            //        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
             //    }
             //}
 
-            //// 投げる入力
-            //if (inputState.Y)
-            //{
-            //    ThrowChild();
-            //}
+            // 投げる入力
+            if (inputState.Y)
+            {
+                ThrowChild();
+            }
+
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                // ゲーム内の"Child"を取得して衝突判定を無視する
+                character._children = GameObject.FindGameObjectsWithTag("Child");
+                for (int i = 0; i < character._children.Length; i++)
+                {
+                    Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
+                    character._children[i].GetComponent<RigidbodyCharacter>()._objected = false;
+                    character._children[i].GetComponent<Rigidbody>().isKinematic = false;
+                }
+            }
+
+            // プレス機の稼働を許可を入力
+            _isPressMachineActived = inputState.LeftShoulder ? true : false;
 
             // ジャンプの入力と処理
             if (inputState.A)
@@ -73,11 +87,11 @@ public class PlayerController : MonoBehaviour {
             // 移動の入力
             if(Input.GetKey(KeyCode.A))
             {
-                velocity.x = -character._moveSpeed;
+                velocity = Vector3.left;
             }
             else if(Input.GetKey(KeyCode.D))
             {
-                velocity.x = +character._moveSpeed;
+                velocity = Vector3.right;
             }
             else
             {
@@ -86,24 +100,30 @@ public class PlayerController : MonoBehaviour {
 
             // TODO : ゲームパッド側で同じ処理が記載されているので修正する
             // 持ち上げるための衝突判定を有効化
-            //if (Input.GetKeyDown(KeyCode.Z))
-            //{
-            //    // ゲーム内の"Child"を取得して衝突判定を無視する
-            //    character._children = GameObject.FindGameObjectsWithTag("Child");
-            //    for (int i = 0; i < character._children.Length; i++)
-            //    {
-            //        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), false);
-            //    }
-            //}
-            //else if (Input.GetKeyUp(KeyCode.Z))
-            //{
-            //    // ゲーム内の"Child"を取得して衝突判定を無視する
-            //    character._children = GameObject.FindGameObjectsWithTag("Child");
-            //    for (int i = 0; i < character._children.Length; i++)
-            //    {
-            //        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
-            //    }
-            //}
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                // ゲーム内の"Child"を取得して衝突判定を有効化する
+                character._children = GameObject.FindGameObjectsWithTag("Child");
+                for (int i = 0; i < character._children.Length; i++)
+                {
+                    //if (character._children[i].GetComponent<RigidbodyCharacter>()._objected)
+                    {
+                        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), false);
+                    }
+                }
+            }
+            else if (Input.GetKeyUp(KeyCode.Z))
+            {
+                // ゲーム内の"Child"を取得して衝突判定を無効化する
+                character._children = GameObject.FindGameObjectsWithTag("Child");
+                for (int i = 0; i < character._children.Length; i++)
+                {
+                    if (!character._children[i].GetComponent<RigidbodyCharacter>()._objected)
+                    {
+                        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
+                    }
+                }
+            }
 
             // 投げる入力
             if (Input.GetKey(KeyCode.X))
@@ -111,10 +131,25 @@ public class PlayerController : MonoBehaviour {
                 ThrowChild();
             }
 
+            // プレス機の稼働を許可を入力
+            _isPressMachineActived = (Input.GetKey(KeyCode.W)) ? true : false;
+
             // ジャンプ入力
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 character.Jump(character._jumpPower);
+            }
+
+            if(Input.GetKeyDown(KeyCode.C))
+            {
+                // ゲーム内の"Child"を取得して衝突判定を無視する
+                character._children = GameObject.FindGameObjectsWithTag("Child");
+                for (int i = 0; i < character._children.Length; i++)
+                {
+                    Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
+                    character._children[i].GetComponent<RigidbodyCharacter>()._objected = false;
+                    character._children[i].GetComponent<Rigidbody>().isKinematic = false;
+                }
             }
         }
 
@@ -128,21 +163,19 @@ public class PlayerController : MonoBehaviour {
             // 子要素になっているものを外して前方向に投げる
             Transform child = transform.GetChild(0);
             child.transform.SetParent(null);
-            //child.GetComponent<Rigidbody>().isKinematic = false;
-            //child.GetComponent<Rigidbody>().velocity = transform.up * 3F + transform.forward * 3.5F;
-            // ここでキャラクターからオブジェクトに仕様変更される
-            child.GetComponent<Collider>().isTrigger = false;
-            child.GetComponent<RigidbodyCharacter>()._objected = true;
+            child.GetComponent<RigidbodyCharacter>()._isGrounded = false;
+            child.GetComponent<Rigidbody>().velocity = transform.up * 3F + transform.forward * 3.5F;
         }
     }
 
     void OnCollisionEnter(Collision other) {
         if (other.gameObject.tag == "Child")
         {
-            // Lift Up
+            // 有効化された衝突判定で持ち上げる
             if (Input.GetKey(KeyCode.Z) || ((inputState != null) && inputState.X))
             {
                 Vector3 overHead = new Vector3(0F, 1F + transform.childCount, 0F);
+                other.transform.GetComponent<RigidbodyCharacter>()._objected = true;
                 other.transform.position = transform.position + overHead;
                 other.transform.SetParent(transform);
             }

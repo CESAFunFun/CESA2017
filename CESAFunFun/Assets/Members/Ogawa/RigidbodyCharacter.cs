@@ -16,7 +16,7 @@ public class RigidbodyCharacter : MonoBehaviour {
     public float _moveSpeed = 1F;
     public float _jumpPower = 1F;
 
-    public GameObject[] _objCol;
+    public GameObject[] _children;
 
     void Start() {
         // アタッチされているRigidbodyを取得
@@ -26,8 +26,8 @@ public class RigidbodyCharacter : MonoBehaviour {
         // 移動量を初期化
         velocity = Vector3.zero;
 
-        for (int i = 0; i < _objCol.Length; i++)
-            Physics.IgnoreCollision(_objCol[i].GetComponent<Collider>(), GetComponent<Collider>());
+        // タグ"Child"との衝突は無効化する
+        IgnoreCharacter("Child", true);
 
         // 重力の方向の設定
         gravity = -Physics.gravity;
@@ -73,6 +73,15 @@ public class RigidbodyCharacter : MonoBehaviour {
         }
     }
 
+    public void IgnoreCharacter(string tag, bool ignore) {
+        // 子要素との衝突判定は無視する
+        _children = GameObject.FindGameObjectsWithTag(tag);
+        for (int i = 0; i < _children.Length; i++)
+        {
+            Physics.IgnoreCollision(_children[i].GetComponent<Collider>(), GetComponent<Collider>(), ignore);
+        }
+    }
+
     void OnCollisionEnter(Collision other) {
         //左右の壁のtagを　FloorからWallに変更
         //この場合のプログラムはFloorに接しているところが足場になるため
@@ -81,6 +90,7 @@ public class RigidbodyCharacter : MonoBehaviour {
         {
             // 接地判定のフラグを変更
             _isGrounded = true;
+            if (_objected) rigidbody.isKinematic = true;
         }
     }
 }
