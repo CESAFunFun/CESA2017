@@ -58,7 +58,6 @@ public class Tracking : MonoBehaviour
     //ポジションの更新
     void PosUpdate()
     {
-        Debug.Log(_target);
         target = _target.transform;
     }
     //移動
