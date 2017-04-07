@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
 
     [SerializeField]
-    private GameObject[] playerChilds;
+    private GameObject childPrefab;
     [SerializeField]
     private GameObject goalText;
     [SerializeField]
@@ -23,6 +23,11 @@ public class GameManager : MonoBehaviour
     private PressMachine machineBottom;
 
     public static GameManager _instance = null;
+
+    [SerializeField]
+    private int childNum;
+
+    public GameObject[] _children;
 
     void Awake()
     {
@@ -70,20 +75,18 @@ public class GameManager : MonoBehaviour
     
     void CreateChild()
     {
-        Debug.Log("aaa");
         if (machineTop._playerHit)
         {
-            Debug.Log("bbb");
             machineTop._playerHit = false;
-            childManager.CreateChild(playerChilds, new Vector3(playerChilds.Length - 1, 1, 0));
-            for (int i = 0; i < playerChilds.Length; i++)
+            _children = childManager.CreateChild(childPrefab, new Vector3(-1, 1, 0),childNum);
+            for (int i = 0; i < _children.Length; i++)
             {
                 if (i == 0)
                 {
-                    childManager.TrackCharacter(playerChilds[i], playerParentTop);
+                    childManager.TrackCharacter(_children[i], playerParentTop);
                 }
                 else
-                    childManager.TrackCharacter(playerChilds[i - 1], playerChilds[i]);
+                    childManager.TrackCharacter(_children[i - 1], _children[i]);
             }
         }
 

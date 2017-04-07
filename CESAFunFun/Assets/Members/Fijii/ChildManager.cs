@@ -15,13 +15,15 @@ public class ChildManager : MonoBehaviour {
 	}
 
     //子供の生成
-    public void CreateChild(GameObject[] child,Vector3 pos)
+    public GameObject[] CreateChild(GameObject child,Vector3 pos,int childNum)
     {
-        for (int i = 0; i < child.Length; i++)
+        GameObject[] children = new GameObject[childNum];
+        for (int i = 0; i < childNum; i++)
         {
-            Instantiate(child[i], pos, Quaternion.identity);
+            children[i] = Instantiate(child, pos, Quaternion.identity);
             pos.x += i;
         }
+        return children;
     }
 
     public GameObject CreateChild(GameObject prefab, Vector3 position)
