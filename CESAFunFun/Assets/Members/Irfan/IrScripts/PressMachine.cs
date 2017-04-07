@@ -9,8 +9,8 @@ public class PressMachine : MonoBehaviour
     [SerializeField]
     private float backSpeed = 5;
 
-    public bool _actived = false;
-    public bool _playerHit = false;
+    public bool _actived;
+    public bool _playerHit;
 
     private Vector3 startPos;
 
@@ -23,11 +23,13 @@ public class PressMachine : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {       
         if (_actived)
             transform.position = Vector3.MoveTowards(transform.position, transform.position - Vector3.up * 5, speed * Time.deltaTime); 
         else
             transform.position = Vector3.MoveTowards(transform.position, startPos, backSpeed * Time.deltaTime);
+
+        Debug.Log("PM = " + _actived);
 
     }
 

@@ -17,12 +17,12 @@ public class FloorScript : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if(detector._triggered)
-        {
-            Debug.Log("Turn down");
-            //transform.Translate(Vector3.down * 5 * Time.deltaTime);
-            transform.position = Vector3.Lerp(transform.position, _stop, Time.deltaTime * _speed);
-        }
+       // if(detector._actived)
+       // {
+       //     Debug.Log("Turn down");
+       //     //transform.Translate(Vector3.down * 5 * Time.deltaTime);
+       //     transform.position = Vector3.Lerp(transform.position, _stop, Time.deltaTime * _speed);
+       // }
 		
 	}
 }

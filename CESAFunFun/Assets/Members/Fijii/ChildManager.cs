@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ChildManager : MonoBehaviour {
 
+    [SerializeField]
+    private GameObject childPrefab;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -15,13 +18,17 @@ public class ChildManager : MonoBehaviour {
 	}
 
     //子供の生成
-    public void CreateChild(GameObject[] child,Vector3 pos)
+    public GameObject[] CreateChild(GameObject player,Vector3 pos,int childNum)
     {
-        for (int i = 0; i < child.Length; i++)
+        GameObject[] children = new GameObject[childNum];
+        for (int i = 0; i < childNum; i++)
         {
-            Instantiate(child[i], pos, Quaternion.identity);
+            children[i] = Instantiate(childPrefab, pos, Quaternion.identity);
             pos.x += i;
+            //キャラクターに重力を設定する
+            children[i].GetComponent<RigidbodyCharacter>()._downGravity = player.GetComponent<RigidbodyCharacter>()._downGravity;
         }
+        return children;
     }
 
     public GameObject CreateChild(GameObject prefab, Vector3 position)
@@ -29,10 +36,32 @@ public class ChildManager : MonoBehaviour {
         return Instantiate(prefab, position, Quaternion.identity);
     }
 
-
     //追従オブジェクトを決める
     public void TrackCharacter(GameObject predator,GameObject target)
     {
         predator.GetComponent<Tracking>()._target = target;
+    }
+
+    //追従オブジェクトを変更
+    public void ChengeTrackCharacter(GameObject[] children,GameObject player)
+    {
+       
+        int count = 0;
+
+        for (int i = 0; i < children.Length; i++) 
+        {
+
+            //子供がオブジェクトだったらターゲットを変える
+            if (children[i].GetComponent<RigidbodyCharacter>()._objected)
+                count++;
+
+            if (i == count)
+                TrackCharacter(children[i], player);
+
+            else
+                TrackCharacter(children[i - count], children[i]);
+
+        }
+
     }
 }

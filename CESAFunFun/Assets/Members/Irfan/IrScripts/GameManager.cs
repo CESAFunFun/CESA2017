@@ -6,8 +6,6 @@ public class GameManager : MonoBehaviour
 {
 
     [SerializeField]
-    private GameObject[] playerChilds;
-    [SerializeField]
     private GameObject goalText;
     [SerializeField]
     private GameObject pressMachine;
@@ -23,6 +21,13 @@ public class GameManager : MonoBehaviour
     private PressMachine machineBottom;
 
     public static GameManager _instance = null;
+
+    [SerializeField]
+    private int childNum;
+
+    private GameObject[] childrenTop;
+
+    private GameObject[] childrenBottom;
 
     void Awake()
     {
@@ -43,6 +48,8 @@ public class GameManager : MonoBehaviour
 
         machineTop = pressMachine.transform.GetChild(0).GetComponent<PressMachine>();
         machineBottom = pressMachine.transform.GetChild(1).GetComponent<PressMachine>();
+
+        Debug.Log(machineTop);
     }
 
     // Update is called once per frame
@@ -50,12 +57,21 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            Debug.Log("asdsad");
+
             machineTop._actived = true;
             machineBottom._actived = true;
+
+            Debug.Log(machineTop._actived);
+            
         }      
 
         CreateChild();
+
         ShowGoal();
+
+        ChildTargetUpdate();
+
     }
 
     void ShowGoal()
@@ -70,29 +86,66 @@ public class GameManager : MonoBehaviour
     
     void CreateChild()
     {
-        Debug.Log("aaa");
+
+        // 　4/7
+        //   藤井　修正
+        //   状態  ちょっと鼻がムズムズする時
+
+        //プレス機と当たったら子供を生成
         if (machineTop._playerHit)
         {
-            Debug.Log("bbb");
+            childrenTop = childManager.CreateChild(playerParentTop, new Vector3(-1, 1, 0),childNum);
+            //プレイヤーとのあたり判定無視
+            playerParentTop.GetComponent<RigidbodyCharacter>().IgnoreCharacter("Child", true);
+            //追従オブジェクトの変更
+            childManager.ChengeTrackCharacter(childrenTop, playerParentTop);
             machineTop._playerHit = false;
-            childManager.CreateChild(playerChilds, new Vector3(playerChilds.Length - 1, 1, 0));
-            for (int i = 0; i < playerChilds.Length; i++)
-            {
-                if (i == 0)
-                {
-                    childManager.TrackCharacter(playerChilds[i], playerParentTop);
-                }
-                else
-                    childManager.TrackCharacter(playerChilds[i - 1], playerChilds[i]);
-            }
         }
 
+        //プレス機と当たったら子供を生成
         if (machineBottom._playerHit)
         {
+            childrenBottom = childManager.CreateChild(playerParentBottom, new Vector3(-1, 1, 0), childNum);
+            //プレイヤーとのあたり判定無視
+            playerParentBottom.GetComponent<RigidbodyCharacter>().IgnoreCharacter("Child", true);
+            //追従オブジェクトの変更
+            childManager.ChengeTrackCharacter(childrenBottom, playerParentBottom);
             machineBottom._playerHit = false;
-            //childManager.CreateChild(playerChilds, new Vector3(playerChilds.Length - 1, -1, 0));
-            //playerParentBottom.Jump(playerParentBottom._jumpPower);          
         }
         
+    }
+    //子供がオブジェクト化しているか
+    bool IsChild(GameObject[] child)
+    {
+        for (int i = 0; i < child.Length; i++)
+        {
+            if (child[i].GetComponent<RigidbodyCharacter>()._objected)
+                return false;
+        }
+        return true;
+    }
+
+    //ターゲットを更新する
+    void ChildTargetUpdate()
+    {
+        //オブジェクト化している子供がいればターゲット変更
+        if (!IsChild(childrenTop))
+            childManager.ChengeTrackCharacter(childrenTop, playerParentTop);
+
+        if (!IsChild(childrenBottom))
+            childManager.ChengeTrackCharacter(childrenBottom, playerParentBottom);
+
+    }
+
+
+
+    private void ResetPlayer(GameObject player)
+    {
+        player.SetActive(false);
+    }
+
+    private void DeadChild(GameObject child)
+    {
+        Destroy(child);
     }
 }

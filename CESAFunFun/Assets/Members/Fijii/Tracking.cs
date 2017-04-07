@@ -14,8 +14,7 @@ public class Tracking : MonoBehaviour
 
     [SerializeField]
     private float interval;
-
-    private bool jumpflag;
+    
 
     // Use this for initialization
     void Start()
@@ -36,11 +35,8 @@ public class Tracking : MonoBehaviour
             Move();
 
             //追従しているオブジェクトがジャンプしたら遅れてジャンプ
-            jumpflag = _target.GetComponent<RigidbodyCharacter>()._isGrounded;
-            if (!jumpflag)
-            {
+            if (!target.GetComponent<RigidbodyCharacter>()._isGrounded)
                 Invoke("Jump", 0.2f);
-            }
         }
     }
 
@@ -58,7 +54,6 @@ public class Tracking : MonoBehaviour
     //ポジションの更新
     void PosUpdate()
     {
-        Debug.Log(_target);
         target = _target.transform;
     }
     //移動
