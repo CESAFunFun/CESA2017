@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class DeadZone : MonoBehaviour {
 
-    private GM gameManager;
+    private GameManager gameManager;
 
 	// Use this for initialization
 	void Start () {
         // Hierarichyから"GameManager"を探索して取得しておく
-        gameManager = GameObject.Find("GameManager").GetComponent<GM>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 	}
 	
 	// Update is called once per frame
