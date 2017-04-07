@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Members/Ogawa/Ogawa.unity
+- path: Assets/Members/Irfan/Floor.unity
   isLoaded: 1
   isActive: 1

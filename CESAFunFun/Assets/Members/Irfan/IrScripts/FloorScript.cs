@@ -17,7 +17,7 @@ public class FloorScript : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if(detector._triggered)
+        if(detector._actived)
         {
             Debug.Log("Turn down");
             //transform.Translate(Vector3.down * 5 * Time.deltaTime);
