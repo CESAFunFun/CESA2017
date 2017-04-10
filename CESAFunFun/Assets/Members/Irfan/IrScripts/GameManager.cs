@@ -18,6 +18,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject playerParentBottom;
 
+    [SerializeField]
+    private PlayerController Press1;
+    [SerializeField]
+    private PlayerController Press2;
+
     private ChildManager childManager;
     private PressMachine machineTop;
     private PressMachine machineBottom;
@@ -59,6 +64,7 @@ public class GameManager : MonoBehaviour
             machineTop._actived = true;
             machineBottom._actived = true;
         }      
+        
 
         CreateChild();
 
@@ -66,6 +72,11 @@ public class GameManager : MonoBehaviour
 
         ChildTargetUpdate();
 
+        if (Press1._isPress && Press2._isPress)
+        {
+            machineTop._actived = true;
+            machineBottom._actived = true;
+        }
     }
 
     void ShowGoal()
@@ -88,7 +99,7 @@ public class GameManager : MonoBehaviour
         //プレス機と当たったら子供を生成
         if (machineTop._playerHit)
         {
-            childrenTop = childManager.CreateChild(playerParentTop, new Vector3(-1, 1, 0));
+            childrenTop = childManager.CreateChild(playerParentTop, new Vector3(-4, 2, 0));
             //プレイヤーとのあたり判定無視
             playerParentTop.GetComponent<RigidbodyCharacter>().IgnoreCharacter("Child", true);
             //追従オブジェクトの変更
@@ -99,7 +110,7 @@ public class GameManager : MonoBehaviour
         //プレス機と当たったら子供を生成
         if (machineBottom._playerHit)
         {
-            childrenBottom = childManager.CreateChild(playerParentBottom, new Vector3(-1, -3, 0));
+            childrenBottom = childManager.CreateChild(playerParentBottom, new Vector3(-4, -2, 0));
             //プレイヤーとのあたり判定無視
             playerParentBottom.GetComponent<RigidbodyCharacter>().IgnoreCharacter("Child", true);
             //追従オブジェクトの変更

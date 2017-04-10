@@ -4,6 +4,7 @@ using UnityEngine;
 using GamepadInput;
 
 public class PlayerController : MonoBehaviour {
+    public bool _isPress;
 
     private RigidbodyCharacter character;
 
@@ -54,6 +55,16 @@ public class PlayerController : MonoBehaviour {
             //        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
             //    }
             //}
+
+            //同時にＢおしたらプレスキーおちるんご
+            if(inputState.B)
+            {
+                _isPress = true;
+            }
+            else
+            {
+                _isPress = false;
+            }
 
             // 投げる入力
             if (inputState.Y)
@@ -131,7 +142,7 @@ public class PlayerController : MonoBehaviour {
                     }
                 }
             }
-
+        
             // 投げる入力
             if (Input.GetKey(KeyCode.X))
             {
@@ -181,9 +192,11 @@ public class PlayerController : MonoBehaviour {
     void OnCollisionEnter(Collision other) {
         if (other.gameObject.tag == "Child")
         {
+            Debug.Break();
             // 有効化された衝突判定で持ち上げる
             if (Input.GetKey(KeyCode.Z) || ((inputState != null) && inputState.X))
             {
+                
                 //一時的なキネマティックを解除
                 other.transform.GetComponent<Rigidbody>().isKinematic = false;
                 other.transform.GetComponent<RigidbodyCharacter>()._objected = true;
@@ -194,6 +207,7 @@ public class PlayerController : MonoBehaviour {
             }
         }
     }
+
 
     GamepadState GetGamePad(GamePad.Index index)
     {
