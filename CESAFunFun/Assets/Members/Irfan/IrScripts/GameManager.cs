@@ -11,8 +11,10 @@ public class GameManager : MonoBehaviour
     private GameObject pressMachine;
     [SerializeField]
     private GoalScript goalArea;
+
     [SerializeField]
     private GameObject playerParentTop;
+
     [SerializeField]
     private GameObject playerParentBottom;
 
@@ -49,7 +51,6 @@ public class GameManager : MonoBehaviour
         machineTop = pressMachine.transform.GetChild(0).GetComponent<PressMachine>();
         machineBottom = pressMachine.transform.GetChild(1).GetComponent<PressMachine>();
 
-        Debug.Log(machineTop);
     }
 
     // Update is called once per frame
@@ -57,13 +58,9 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            Debug.Log("asdsad");
 
             machineTop._actived = true;
             machineBottom._actived = true;
-
-            Debug.Log(machineTop._actived);
-            
         }      
 
         CreateChild();
@@ -98,7 +95,7 @@ public class GameManager : MonoBehaviour
             //プレイヤーとのあたり判定無視
             playerParentTop.GetComponent<RigidbodyCharacter>().IgnoreCharacter("Child", true);
             //追従オブジェクトの変更
-            childManager.ChengeTrackCharacter(childrenTop, playerParentTop);
+            childManager.ChangeTrackCharacter(childrenTop, playerParentTop);
             machineTop._playerHit = false;
         }
 
@@ -109,7 +106,7 @@ public class GameManager : MonoBehaviour
             //プレイヤーとのあたり判定無視
             playerParentBottom.GetComponent<RigidbodyCharacter>().IgnoreCharacter("Child", true);
             //追従オブジェクトの変更
-            childManager.ChengeTrackCharacter(childrenBottom, playerParentBottom);
+            childManager.ChangeTrackCharacter(childrenBottom, playerParentBottom);
             machineBottom._playerHit = false;
         }
         
@@ -117,10 +114,13 @@ public class GameManager : MonoBehaviour
     //子供がオブジェクト化しているか
     bool IsChild(GameObject[] child)
     {
-        for (int i = 0; i < child.Length; i++)
+        if (child != null)
         {
-            if (child[i].GetComponent<RigidbodyCharacter>()._objected)
-                return false;
+            for (int i = 0; i < child.Length; i++)
+            {
+                if (child[i].GetComponent<RigidbodyCharacter>()._objected)
+                    return false;
+            }
         }
         return true;
     }
@@ -130,14 +130,12 @@ public class GameManager : MonoBehaviour
     {
         //オブジェクト化している子供がいればターゲット変更
         if (!IsChild(childrenTop))
-            childManager.ChengeTrackCharacter(childrenTop, playerParentTop);
+            childManager.ChangeTrackCharacter(childrenTop, playerParentTop);
 
         if (!IsChild(childrenBottom))
-            childManager.ChengeTrackCharacter(childrenBottom, playerParentBottom);
+            childManager.ChangeTrackCharacter(childrenBottom, playerParentBottom);
 
     }
-
-
 
     private void ResetPlayer(GameObject player)
     {

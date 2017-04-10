@@ -43,25 +43,29 @@ public class ChildManager : MonoBehaviour {
     }
 
     //追従オブジェクトを変更
-    public void ChengeTrackCharacter(GameObject[] children,GameObject player)
+    public void ChangeTrackCharacter(GameObject[] children, GameObject player)
     {
-       
+
         int count = 0;
 
-        for (int i = 0; i < children.Length; i++) 
+        for (int i = 0; i < children.Length; i++)
         {
 
             //子供がオブジェクトだったらターゲットを変える
             if (children[i].GetComponent<RigidbodyCharacter>()._objected)
+            {
                 count++;
-
+                continue;
+            }
+            //親に追従
             if (i == count)
                 TrackCharacter(children[i], player);
-
+            //子供がオブジェクト化されていない時
+            else if (count == 0)
+                TrackCharacter(children[i], children[i - 1]);
+            //子供がオブジェクト化されている時
             else
-                TrackCharacter(children[i - count], children[i]);
-
+                TrackCharacter(children[i], children[i - count]);
         }
-
     }
 }
