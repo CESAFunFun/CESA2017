@@ -108,6 +108,9 @@ public class PlayerController : MonoBehaviour {
                 {
                     //if (character._children[i].GetComponent<RigidbodyCharacter>()._objected)
                     {
+                        //一時的にオブジェクトをキネマティックにする
+                        character._children[i].GetComponent<Rigidbody>().isKinematic = true;
+                        character._children[i].GetComponent<Tracking>().enabled = false;
                         Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), false);
                     }
                 }
@@ -120,6 +123,10 @@ public class PlayerController : MonoBehaviour {
                 {
                     if (!character._children[i].GetComponent<RigidbodyCharacter>()._objected)
                     {
+
+                        //一時的なキネマティックを解除
+                        character._children[i].GetComponent<Rigidbody>().isKinematic = false;
+                        character._children[i].GetComponent<Tracking>().enabled = true;
                         Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
                     }
                 }
@@ -146,6 +153,7 @@ public class PlayerController : MonoBehaviour {
                 character._children = GameObject.FindGameObjectsWithTag("Child");
                 for (int i = 0; i < character._children.Length; i++)
                 {
+                    character._children[i].GetComponent<Tracking>().enabled = true;
                     Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
                     character._children[i].GetComponent<RigidbodyCharacter>()._objected = false;
                     character._children[i].GetComponent<Rigidbody>().isKinematic = false;
@@ -164,7 +172,9 @@ public class PlayerController : MonoBehaviour {
             Transform child = transform.GetChild(0);
             child.transform.SetParent(null);
             child.GetComponent<RigidbodyCharacter>()._isGrounded = false;
-            child.GetComponent<Rigidbody>().velocity = transform.up * 3F + transform.forward * 3.5F;
+            child.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
+            Vector3 upVec = character._downGravity ? Vector3.up : Vector3.down;
+            child.GetComponent<Rigidbody>().velocity = upVec * 3F + transform.forward * 3.5F;
         }
     }
 
@@ -174,9 +184,12 @@ public class PlayerController : MonoBehaviour {
             // 有効化された衝突判定で持ち上げる
             if (Input.GetKey(KeyCode.Z) || ((inputState != null) && inputState.X))
             {
-                Vector3 overHead = new Vector3(0F, 1F + transform.childCount, 0F);
+                //一時的なキネマティックを解除
+                other.transform.GetComponent<Rigidbody>().isKinematic = false;
                 other.transform.GetComponent<RigidbodyCharacter>()._objected = true;
-                other.transform.position = transform.position + overHead;
+                Vector3 upVec = character._downGravity ? Vector3.up : Vector3.down;
+                other.transform.position = transform.position + upVec;
+                other.transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
                 other.transform.SetParent(transform);
             }
         }

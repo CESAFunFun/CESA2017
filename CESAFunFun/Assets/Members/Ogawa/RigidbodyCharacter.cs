@@ -58,7 +58,7 @@ public class RigidbodyCharacter : MonoBehaviour {
     public void Move(Vector3 v, float speed) {
         // XXX:Ｙ軸を意図的に排除している
         velocity.x = v.x * speed;
-        velocity.z = v.z * speed;
+        //velocity.z = v.z * speed;
         transform.LookAt(transform.position + new Vector3(velocity.x, 0F, velocity.z));
     }
 
