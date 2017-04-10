@@ -27,16 +27,19 @@ public class Tracking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!character._objected)
+        if (_target)
         {
-            //ポジションの更新
-            PosUpdate();
-            //移動
-            Move();
+            if (!character._objected)
+            {
+                //ポジションの更新
+                PosUpdate();
+                //移動
+                Move();
 
-            //追従しているオブジェクトがジャンプしたら遅れてジャンプ
-            if (!target.GetComponent<RigidbodyCharacter>()._isGrounded)
-                Invoke("Jump", 0.2f);
+                //追従しているオブジェクトがジャンプしたら遅れてジャンプ
+                if (!target.GetComponent<RigidbodyCharacter>()._isGrounded)
+                    Invoke("Jump", 0.2f);
+            }
         }
     }
 
@@ -54,7 +57,7 @@ public class Tracking : MonoBehaviour
     //ポジションの更新
     void PosUpdate()
     {
-        target = _target.transform;
+            target = _target.transform;
     }
     //移動
     void Move()
