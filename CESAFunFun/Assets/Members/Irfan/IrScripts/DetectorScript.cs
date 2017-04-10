@@ -21,11 +21,9 @@ public class DetectorScript : MonoBehaviour {
     private void OnTriggerStay(Collider other)
     {
         //オブジェクトの数をリストに追加する
-        if (other.gameObject.tag == "Player"　|| other.gameObject.tag == "Child" && !objs.Contains(other.gameObject))
-        {
+        if ((other.gameObject.tag == "Player"　|| other.gameObject.tag == "Child") && !objs.Contains(other.gameObject))
             objs.Add(other.gameObject);
-            
-        }
+        
     }
     private void OnTriggerExit(Collider other)
     {
