@@ -108,6 +108,8 @@ public class PlayerController : MonoBehaviour {
                 {
                     //if (character._children[i].GetComponent<RigidbodyCharacter>()._objected)
                     {
+                        //一時的にオブジェクトをキネマティックにする
+                        character._children[i].GetComponent<Rigidbody>().isKinematic = true;
                         character._children[i].GetComponent<Tracking>().enabled = false;
                         Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), false);
                     }
@@ -121,6 +123,9 @@ public class PlayerController : MonoBehaviour {
                 {
                     if (!character._children[i].GetComponent<RigidbodyCharacter>()._objected)
                     {
+
+                        //一時的なキネマティックを解除
+                        character._children[i].GetComponent<Rigidbody>().isKinematic = false;
                         character._children[i].GetComponent<Tracking>().enabled = true;
                         Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
                     }
@@ -167,6 +172,7 @@ public class PlayerController : MonoBehaviour {
             Transform child = transform.GetChild(0);
             child.transform.SetParent(null);
             child.GetComponent<RigidbodyCharacter>()._isGrounded = false;
+            child.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
             Vector3 upVec = character._downGravity ? Vector3.up : Vector3.down;
             child.GetComponent<Rigidbody>().velocity = upVec * 3F + transform.forward * 3.5F;
         }
@@ -178,12 +184,13 @@ public class PlayerController : MonoBehaviour {
             // 有効化された衝突判定で持ち上げる
             if (Input.GetKey(KeyCode.Z) || ((inputState != null) && inputState.X))
             {
-                Physics.IgnoreCollision(other.transform.GetComponent<Collider>(), GetComponent<Collider>(), true);
+                //一時的なキネマティックを解除
+                other.transform.GetComponent<Rigidbody>().isKinematic = false;
                 other.transform.GetComponent<RigidbodyCharacter>()._objected = true;
                 Vector3 upVec = character._downGravity ? Vector3.up : Vector3.down;
                 other.transform.position = transform.position + upVec;
+                other.transform.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
                 other.transform.SetParent(transform);
-                Physics.IgnoreCollision(other.transform.GetComponent<Collider>(), GetComponent<Collider>(), false);
             }
         }
     }

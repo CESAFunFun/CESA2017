@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
         //プレス機と当たったら子供を生成
         if (machineBottom._playerHit)
         {
-            childrenBottom = childManager.CreateChild(playerParentBottom, new Vector3(-1, 1, 0));
+            childrenBottom = childManager.CreateChild(playerParentBottom, new Vector3(-1, -3, 0));
             //プレイヤーとのあたり判定無視
             playerParentBottom.GetComponent<RigidbodyCharacter>().IgnoreCharacter("Child", true);
             //追従オブジェクトの変更
