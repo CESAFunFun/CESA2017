@@ -51,6 +51,11 @@ public class gPlayerController : MonoBehaviour
             character._moveSpeed = 0.05f;
             character.Move(velocity, character._moveSpeed);
         }
+        //ジャンプ処理
+        if (inputState.A)
+        {
+            character.Jump(character._jumpPower);
+        }
 
     }
 
