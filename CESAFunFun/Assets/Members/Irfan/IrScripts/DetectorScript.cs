@@ -1,51 +1,97 @@
-﻿using System.Collections;
+﻿//---------------------------------------
+// IRFAN FAHMI RAMADHAN
+//
+// 2017/04/07
+//
+// DetectorScript.cs
+//---------------------------------------
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DetectorScript : MonoBehaviour {
 
-    public bool _actived;
+    public bool _actived = false;                                   //床を動かすためのフラグ
+    public bool _stopped = true;                                    //床が止まってるかどうかのフラグ
 
     [SerializeField]
-    private float speed;
-
+    private float speed;                                            //動く速度
     [SerializeField]
-    private Vector3 targetPos;
-    private Transform floorParent;
+    private Vector3 endPosition;                                    //止まる座標
 
-    private Vector3 startPos = new Vector3(0,0,0);
+    private List<GameObject> objs = new List<GameObject>();         //床に当たるオブジェクト
+    private int objsNum = 0;                                        //床に当たるオブジェクトの数 
+    private Transform floorParent;                                  //床自体
+    
 
     private void Start()
     {
+        //親から床を取得する
         floorParent = transform.parent;
     }
 
     private void Update()
     {
-        Debug.Log(floorParent.position);
-
+        objsNum = objs.Count;
+        
+        //if (objsNum == 0)
+        //    objsNum = 1;
+        //
+        //endPosition = endPosition * objsNum;
+        
+        //Debug.Log(objsNum);
+        
         if (_actived)
-            floorParent.position = Vector3.MoveTowards(floorParent.position, targetPos, speed * Time.deltaTime);
-        else
-            floorParent.position = Vector3.MoveTowards(floorParent.position, Vector3.zero, speed * Time.deltaTime);
+        {
+            if (_stopped)
+                floorParent.position = Vector3.MoveTowards(floorParent.position, endPosition, speed * Time.deltaTime);
+            else
+                floorParent.position = Vector3.MoveTowards(floorParent.position, Vector3.zero, speed * Time.deltaTime);
+        }
+
+        //もとのところに戻す
+        if (floorParent.position == Vector3.zero)
+        {
+            _actived = false;
+            _stopped = true;
+        }
+
+        Debug.Log("actived = " + _actived);
+        Debug.Log("stopped = " + _stopped);
+
+        //床にあたるオブジェクトのリストをクリアする
+        objs.Clear();
     }
 
-    void OnTriggerStay(Collider col)
-    { 
+
+
+    void OnTriggerEnter(Collider col)
+    {
+        //プレイヤーが踏んだら動く
         if (col.gameObject.tag == "Player")
         {
-
             _actived = true;
-            //_triggered = true;
-            Debug.Log("Triggered Stay");
-
-            //floorParent.position = Vector3.MoveTowards(floorParent.position, targetPos, speed * Time.deltaTime);
         }
     }
-    void OnTriggerExit(Collider other)
+
+    private void OnTriggerStay(Collider other)
     {
-        Debug.Log("Exit");
-        _actived = false;
-        //floorParent.position = Vector3.MoveTowards(floorParent.position, Vector3.zero, speed * Time.deltaTime);
+        //オブジェクトの数をリストに追加する
+        if (other.gameObject.tag == "Player" && !objs.Contains(other.gameObject))
+        {
+            objs.Add(other.gameObject);
+        }
     }
+    private void OnTriggerExit(Collider other)
+    {
+        _stopped = false;
+    }
+
+    //オブジェクトの数を取得する
+    public int getObjsNum()
+    {
+        return objsNum;
+    }
+
 }
