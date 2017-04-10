@@ -23,10 +23,7 @@ public class GameManager : MonoBehaviour
     private PressMachine machineBottom;
 
     public static GameManager _instance = null;
-
-    [SerializeField]
-    private int childNum;
-
+    
     private GameObject[] childrenTop;
 
     private GameObject[] childrenBottom;
@@ -91,7 +88,7 @@ public class GameManager : MonoBehaviour
         //プレス機と当たったら子供を生成
         if (machineTop._playerHit)
         {
-            childrenTop = childManager.CreateChild(playerParentTop, new Vector3(-1, 1, 0),childNum);
+            childrenTop = childManager.CreateChild(playerParentTop, new Vector3(-1, 1, 0));
             //プレイヤーとのあたり判定無視
             playerParentTop.GetComponent<RigidbodyCharacter>().IgnoreCharacter("Child", true);
             //追従オブジェクトの変更
@@ -102,7 +99,7 @@ public class GameManager : MonoBehaviour
         //プレス機と当たったら子供を生成
         if (machineBottom._playerHit)
         {
-            childrenBottom = childManager.CreateChild(playerParentBottom, new Vector3(-1, 1, 0), childNum);
+            childrenBottom = childManager.CreateChild(playerParentBottom, new Vector3(-1, 1, 0));
             //プレイヤーとのあたり判定無視
             playerParentBottom.GetComponent<RigidbodyCharacter>().IgnoreCharacter("Child", true);
             //追従オブジェクトの変更

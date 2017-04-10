@@ -6,9 +6,11 @@ public class ChildManager : MonoBehaviour {
 
     [SerializeField]
     private GameObject childPrefab;
+    [SerializeField]
+    private int childNum;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -18,7 +20,7 @@ public class ChildManager : MonoBehaviour {
 	}
 
     //子供の生成
-    public GameObject[] CreateChild(GameObject player,Vector3 pos,int childNum)
+    public GameObject[] CreateChild(GameObject player,Vector3 pos)
     {
         GameObject[] children = new GameObject[childNum];
         for (int i = 0; i < childNum; i++)
@@ -29,11 +31,6 @@ public class ChildManager : MonoBehaviour {
             children[i].GetComponent<RigidbodyCharacter>()._downGravity = player.GetComponent<RigidbodyCharacter>()._downGravity;
         }
         return children;
-    }
-
-    public GameObject CreateChild(GameObject prefab, Vector3 position)
-    {
-        return Instantiate(prefab, position, Quaternion.identity);
     }
 
     //追従オブジェクトを決める
