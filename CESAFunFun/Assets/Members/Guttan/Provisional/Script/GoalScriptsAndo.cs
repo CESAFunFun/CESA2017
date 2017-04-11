@@ -42,7 +42,7 @@ public class GoalScriptsAndo : MonoBehaviour
     void OnTriggerStay(Collider other)
     {
         //子供が当たっている数だけ検知する
-        if (other.gameObject.tag == "Child")
+        if (other.gameObject.tag == "Child"&&!itemList.Contains(other.gameObject))
         {
             itemList.Add(other.gameObject);
         }

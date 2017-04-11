@@ -42,8 +42,10 @@ public class PressMachine : MonoBehaviour
 
         if (col.gameObject.tag == "Player")
         {
-            col.gameObject.transform.position = new Vector3(transform.position.x + 10, transform.position.y * 2, transform.position.z);
+            col.gameObject.transform.position = new Vector3(transform.position.x+2, transform.position.y*2, transform.position.z);
+            col.gameObject.GetComponent<RigidbodyCharacter>()._isGrounded = false;
             _playerHit = true;
+
         }
 
         if (_actived && col.gameObject.tag == "Child")

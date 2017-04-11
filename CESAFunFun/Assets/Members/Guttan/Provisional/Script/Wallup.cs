@@ -6,13 +6,9 @@ public class Wallup : MonoBehaviour {
 
     
     [SerializeField]
-    private GoalScript wallarea1;
+    private GoalScriptsAndo wallarea1;
     [SerializeField]
-    private GoalScript wallarea2;
-
-    //GoalScriptsAndo wallarea;
-
-    // bool flag;
+    private GoalScriptsAndo wallarea2;
 
     [SerializeField]
     private GameObject walltop;
@@ -20,9 +16,6 @@ public class Wallup : MonoBehaviour {
     [SerializeField]
     private GameObject wallbot;
 
-    //移動先ポジション設定
-    public Transform _topTarget;
-    public Transform _botTarget;
     //Flag管理
     private bool _isGoalFlag;
     //timeカウント
