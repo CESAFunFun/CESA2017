@@ -52,18 +52,19 @@ public class GameManager : MonoBehaviour
 
         machineTop = pressMachine.transform.GetChild(0).GetComponent<PressMachine>();
         machineBottom = pressMachine.transform.GetChild(1).GetComponent<PressMachine>();
-
     }
 
     // Update is called once per frame
     void Update ()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.Z))
         {
 
             machineTop._actived = true;
             machineBottom._actived = true;
-        }      
+        } 
+        */     
         
 
         CreateChild();
