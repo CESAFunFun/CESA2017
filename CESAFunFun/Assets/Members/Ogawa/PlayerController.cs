@@ -25,7 +25,8 @@ public class PlayerController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
         // インスペクターからゲームパッドを取得
         inputState = GetGamePad(playerIndex);
 
@@ -66,13 +67,52 @@ public class PlayerController : MonoBehaviour {
                 _isPress = false;
             }
 
+
+
+            // TODO : ゲームパッド側で同じ処理が記載されているので修正する
+            // 持ち上げるための衝突判定を有効化
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                // ゲーム内の"Child"を取得して衝突判定を有効化する
+                character._children = GameObject.FindGameObjectsWithTag("Child");
+                for (int i = 0; i < character._children.Length; i++)
+                {
+                    //if (character._children[i].GetComponent<RigidbodyCharacter>()._objected)
+                    {
+                        //一時的にオブジェクトをキネマティックにする
+                        character._children[i].GetComponent<Rigidbody>().isKinematic = true;
+                        character._children[i].GetComponent<Tracking>().enabled = false;
+                        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), false);
+                    }
+                }
+            }
+            else if (Input.GetKeyUp(KeyCode.Z))
+            {
+                // ゲーム内の"Child"を取得して衝突判定を無効化する
+                character._children = GameObject.FindGameObjectsWithTag("Child");
+                for (int i = 0; i < character._children.Length; i++)
+                {
+                    if (!character._children[i].GetComponent<RigidbodyCharacter>()._objected)
+                    {
+
+                        //一時的なキネマティックを解除
+                        character._children[i].GetComponent<Rigidbody>().isKinematic = false;
+                        character._children[i].GetComponent<Tracking>().enabled = true;
+                        Physics.IgnoreCollision(character._children[i].GetComponent<Collider>(), GetComponent<Collider>(), true);
+                    }
+                }
+            }
+
+
+
+
             // 投げる入力
             if (inputState.Y)
             {
                 ThrowChild();
             }
 
-            if (Input.GetKeyDown(KeyCode.C))
+            if (inputState.RightShoulder)
             {
                 // ゲーム内の"Child"を取得して衝突判定を無視する
                 character._children = GameObject.FindGameObjectsWithTag("Child");
@@ -170,6 +210,7 @@ public class PlayerController : MonoBehaviour {
                     character._children[i].GetComponent<Rigidbody>().isKinematic = false;
                 }
             }
+
         }
 
         // キャラクターの移動
@@ -192,11 +233,9 @@ public class PlayerController : MonoBehaviour {
     void OnCollisionEnter(Collision other) {
         if (other.gameObject.tag == "Child")
         {
-            Debug.Break();
             // 有効化された衝突判定で持ち上げる
-            if (Input.GetKey(KeyCode.Z) || ((inputState != null) && inputState.X))
+            if (Input.GetKey(KeyCode.Z))
             {
-                
                 //一時的なキネマティックを解除
                 other.transform.GetComponent<Rigidbody>().isKinematic = false;
                 other.transform.GetComponent<RigidbodyCharacter>()._objected = true;
@@ -207,8 +246,6 @@ public class PlayerController : MonoBehaviour {
             }
         }
     }
-
-
     GamepadState GetGamePad(GamePad.Index index)
     {
         if (index != GamePad.Index.Any)
