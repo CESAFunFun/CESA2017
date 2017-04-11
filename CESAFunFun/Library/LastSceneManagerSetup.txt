@@ -1,12 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
 - path: Assets/Members/Fijii/Fijii.unity
-=======
-<<<<<<< HEAD
-- path: Assets/Members/Fijii/Fijii.unity
-=======
-- path: Assets/Members/Guttan/2Dtester/gScene/testScene.unity
->>>>>>> c67a42ad0f1be609c3598dc078d295c3116b0e8b
->>>>>>> 3f3c50b437ff77c21a30a5c3e31c613a3d916edc
   isLoaded: 1
   isActive: 1
