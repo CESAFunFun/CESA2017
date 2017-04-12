@@ -1,36 +1,40 @@
-﻿using System.Collections;
+﻿//-----------------------------------
+//@! IRFAN FAHMI RAMADHAN
+//
+//@! GameManager2D.cs
+//-----------------------------------
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class GameManager : MonoBehaviour
-{
+public class GameManager2D : MonoBehaviour {
 
     [SerializeField]
-    private GameObject pressMachine;
+    private GameObject pressMachine;            //プレス機（親）
     [SerializeField]
-    private GoalScript goalArea;
+    private GoalScript goalArea;                //ゴールエリア                
 
     [SerializeField]
-    private GameObject playerParentTop;
-
+    private GameObject playerParentTop;         //上のプレイヤー
     [SerializeField]
-    private GameObject playerParentBottom;
-
-    [SerializeField]
-    private PlayerController Press1;
-    [SerializeField]
-    private PlayerController Press2;
+    private GameObject playerParentBottom;      //下のプレイヤー
 
     private ChildManager childManager;
-    private PressMachine machineTop;
-    private PressMachine machineBottom;
+              
+    private PressMachine machineTop;            //上のプレス機
+    private PressMachine machineBottom;         //下のプレス機
 
-    public static GameManager _instance = null;
-    
-    private GameObject[] childrenTop;
+    public static GameManager2D _instance = null;　//Singleton用
 
-    private GameObject[] childrenBottom;
+    private GameObject[] childrenTop;           //上の子供
+    private GameObject[] childrenBottom;        //下の子供
 
+    enum Gravitation
+    {
+        Top,
+        Bottom
+    };
+
+    //Singleton
     void Awake()
     {
         if (!_instance)
@@ -43,51 +47,38 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        //playerParentTop = GetComponent<RigidbodyCharacter>();
-        //playerParentBottom.GetComponent<RigidbodyCharacter>();
-        //goalArea.GetComponent<GoalScript>();
+        //子供マネージャを取得
         childManager = GetComponent<ChildManager>();
 
+        //プレス機を取得する
         machineTop = pressMachine.transform.GetChild(0).GetComponent<PressMachine>();
         machineBottom = pressMachine.transform.GetChild(1).GetComponent<PressMachine>();
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
-        /*
+        //Zキーでプレス機をActiveする
         if (Input.GetKeyDown(KeyCode.Z))
         {
 
             machineTop._actived = true;
             machineBottom._actived = true;
+           
         } 
-        */     
         
 
+        //子供の生成
         CreateChild();
-
-        ShowGoal();
-
         ChildTargetUpdate();
 
-        if (Press1._isPress && Press2._isPress)
-        {
-            machineTop._actived = true;
-            machineBottom._actived = true;
-        }
+        //if (Press1._isPress && Press2._isPress)
+        //{
+        //    machineTop._actived = true;
+        //    machineBottom._actived = true;
+        //}
     }
 
-    void ShowGoal()
-    {
-        /*
-        if (goalArea._isGoal)
-            goalText.SetActive(true);
-        else
-            goalText.SetActive(false);
-        */
-    }
-    
     void CreateChild()
     {
 
@@ -109,8 +100,6 @@ public class GameManager : MonoBehaviour
         //プレス機と当たったら子供を生成
         if (machineBottom._playerHit)
         {
-            playerParentBottom.transform.position = new Vector3(transform.position.x + 2, transform.position.y, transform.position.z);
-            col.gameObject.GetComponent<RigidbodyCharacter>()._isGrounded = false;
             childrenBottom = childManager.CreateChild(playerParentBottom, new Vector3(-4, -2, 0));
             //プレイヤーとのあたり判定無視
             playerParentBottom.GetComponent<RigidbodyCharacter>().IgnoreCharacter("Child", true);
@@ -118,7 +107,7 @@ public class GameManager : MonoBehaviour
             childManager.ChangeTrackCharacter(childrenBottom, playerParentBottom);
             machineBottom._playerHit = false;
         }
-        
+
     }
     //子供がオブジェクト化しているか
     bool IsChild(GameObject[] child)

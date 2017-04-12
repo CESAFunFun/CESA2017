@@ -1,28 +1,4 @@
 sceneSetups:
-<<<<<<< HEAD
-- path: Assets/Members/Irfan/2D.unity
-=======
-<<<<<<< HEAD
-- path: Assets/Scenes/Stage1.unity
-=======
-<<<<<<< HEAD
-- path: Assets/Members/Fijii/Fijii.unity
-=======
-<<<<<<< HEAD
-- path: Assets/Scenes/Stage1.unity
-=======
-<<<<<<< HEAD
-- path: Assets/Members/Fijii/Fijii.unity
-=======
-<<<<<<< HEAD
-- path: Assets/Members/Fijii/Fijii.unity
-=======
-- path: Assets/Members/Guttan/2Dtester/gScene/testScene.unity
->>>>>>> c67a42ad0f1be609c3598dc078d295c3116b0e8b
->>>>>>> 3f3c50b437ff77c21a30a5c3e31c613a3d916edc
->>>>>>> 88a93131df75866424b3337f8fab410c02baeb38
->>>>>>> cc7f0174b135d4605f5a2f5763a31e8c8b7e2706
->>>>>>> 50442c3b2a976242c6b49c5c5bacd6b625731d19
->>>>>>> 9388e03f76616e95a34af1aeae59d3b135e002fb
+- path: Assets/Members/Irfan/Ir2D/2D.unity
   isLoaded: 1
   isActive: 1
